@@ -34,16 +34,18 @@
 
                                         <div class='box-body'>
 
-                                            <!-- Pick time -->
-                                                <div class="col-xs-12 col-lg-4" style="margin-bottom:5px;">
-                                                    <div class="input-group">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"> Chọn thời gian QT</i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right" id="selectDateRange" >
-                                                    </div>
+                                            <!-- Pick Year -->
+                                                <div class="col-xs-12 col-md-3" style="margin-bottom:5px;">
+                                                    <select id="selectYear" class="form-control select2" aria-label="Default select example"></select>
                                                 </div>
-                                            <!-- /.Pick time -->
+                                            <!-- /.Pick Year -->
+
+                                            <!-- Pick Round -->
+                                                <div class="col-xs-12 col-md-3" style="margin-bottom:5px;">
+                                                    <select id="selectRound" class="form-control select2" aria-label="Default select example"></select>
+                                                </div>
+                                            <!-- /.Pick Round -->
+
 
                                             <!-- submit  -->
                                                 <div class="col-xs-12 col-lg-3">

@@ -11,19 +11,33 @@
 
 	include_once ("../../../db/connectSql.php");
 
-	$curl = connectCurl();
+	//Custom đợt quyết toán
 
-	$con = connectSql();
+	if ($_GET['Round'] = "r1") {
 
-	//Lây dữ liệu đóng học phí để quyết toán
+		$_SESSION['dateRange'] = '01/12/'.substr($_GET['Year'],0,4).' - 31/03/'.substr($_GET['Year'],5,4);
 
-	$_SESSION['BillPaid_DVLK'] = [];
+	} elseif ($_GET['Round'] = "r2") {
 
-	$_SESSION['dateRange'] = $_GET['DateRange'];
+		$_SESSION['dateRange'] = '01/04/'.substr($_GET['Year'],5,4).' - 31/07/'.substr($_GET['Year'],5,4);
+
+	} else {
+		
+		$_SESSION['dateRange'] = '01/08/'.substr($_GET['Year'],5,4).' - 30/11/'.substr($_GET['Year'],5,4);
+
+	}
 
 	$_SESSION['fromDate'] =  substr($_SESSION['dateRange'],0,10);
 
 	$_SESSION['toDate'] = substr($_SESSION['dateRange'],13,10);
+
+	//Lây dữ liệu đóng học phí để quyết toán
+
+	$curl = connectCurl();
+
+	$con = connectSql();
+
+	$_SESSION['BillPaid_DVLK'] = [];
 
 	$query = thongTinDongHocPhiDiaPhuong($curl, $madvpc = 'TX', $fromdate = $_SESSION['fromDate'], $todate = $_SESSION['toDate'], $madp = $_SESSION['MaDP']);
 

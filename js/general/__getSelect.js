@@ -9,36 +9,57 @@
 			dataType: "JSON",
 			success: function(result) {
 
-				let optionSchoolyear = "";
-				
-				let optionSemester = "";
+				//Hiển thị thông tin lựa chọn ĐỊA PHƯƠNG
 
 				let optionDVLK = "";
 
-				if (result['dataSelect'] == null) {
-
-					optionSchoolyear = "<option value='none' selected>Chọn năm học</option>";
-				
-					optionSemester = "<option value='none' selected>Chọn học kì</option>";
+				if (result['resultDP'] == null) {
 
 					optionDVLK = "<option value='none' selected>Chọn Đơn vị liên kết</option>";	
 					
 				} else {
 					
-					$.each(result['dataSelect'], (index, value) => {
+					$.each(result['resultDP'], (index, value) => {
+
+						optionDVLK = "<option value='" + value[0] + "'selected>" + "("+ value[0] + ") " + value[1] + "</option>";
+	
+					});	
+
+				}
+
+				$.each(result['selectDP'], (index, value) => {
+
+					optionDVLK += "<option value='" + value[0] + "'>" + "("+ value[0] + ") " + value[1] + "</option>";		
+
+				});
+
+				$("#selectDVLK").html(optionDVLK);
+
+				//Hiển thi thông tin lựa chọn HỌC KỲ
+
+				let optionSchoolyear = "";
+				
+				let optionSemester = "";
+
+				if (result['resultNHHK'] == null) {
+
+					optionSchoolyear = "<option value='null' selected>Chọn năm học</option>";
+				
+					optionSemester = "<option value='null' selected>Chọn học kì</option>";
+					
+				} else {
+					
+					$.each(result['resultNHHK'], (index, value) => {
 	
 						optionSchoolyear = "<option value='" + value[0] + "'selected>" + value[1] + "</option>";		
 							
 						optionSemester = "<option value='" + value[2] + "'selected>" + value[3] + "</option>";
-
-						optionDVLK = "<option value='" + value[4] + "'selected>" + "("+ value[4] + ") " + value[5] + "</option>";
 	
 					});	
 
-
 				}
 				
-				$.each(result['dataSemester'], (index, value) => {
+				$.each(result['selcetNHHK'], (index, value) => {
 
 					if (value[2] == 'schoolyear') {
 
@@ -51,14 +72,6 @@
 					}	
 
 				});
-
-				$.each(result['dataDVLK'], (index, value) => {
-
-					optionDVLK += "<option value='" + value[0] + "'>" + "("+ value[0] + ") " + value[1] + "</option>";		
-
-				});
-
-				$("#selectDVLK").html(optionDVLK);
 				
 				$("#selectSchoolyear").html(optionSchoolyear);
 
