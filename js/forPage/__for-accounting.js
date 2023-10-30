@@ -368,6 +368,62 @@ function OUconfirm(IdAccounting) {
 }
 
 (function() {
+
+	/*
+		Chọn đợt quyết toán
+	*/
+	$(window).load(() => {
+		$.ajax({
+			url: "./lib/ajax/getStatic/LoadRoadYear.php",
+			dataType: "JSON",
+			success: function(result) {
+
+				//Hiển thi thông tin lựa chọn HỌC KỲ
+
+				let optionYear = "";
+				
+				let optionRound = "";
+
+				if (result['resultRY'] == null) {
+
+					optionYear = "<option value='null' selected>Chọn năm quyết toán</option>";
+				
+					optionRound = "<option value='null' selected>Chọn đợt quyết</option>";
+					
+				} else {
+					
+					$.each(result['resultRY'], (index, value) => {
+	
+						optionYear = "<option value='" + value[0] + "'selected>" + value[1] + "</option>";		
+							
+						optionRound = "<option value='" + value[2] + "'selected>" + value[3] + "</option>";
+	
+					});	
+
+				}
+				
+				$.each(result['selectRY'], (index, value) => {
+
+					if (value[2] == 'year') {
+
+						optionYear += "<option value='" + value[0] + "'>" + value[1] + "</option>";		
+						
+					} else {
+						
+						optionRound += "<option value='" + value[0] + "'>" + value[1] + "</option>";
+
+					}	
+
+				});
+				
+				$("#selectYear").html(optionYear);
+
+				$("#selectRound").html(optionRound);
+			}
+		});
+		
+	});
+
 	
 	/*
 		Tạo dữ liệu quyết toán theo thời gian đã chọn
@@ -376,7 +432,8 @@ function OUconfirm(IdAccounting) {
 		$.ajax({
 			url: "./lib/ajax/accounting/createDataAccounting.php",
 			data: {
-				DateRange: $("#selectDateRange").val()
+				Year: $("#selectYear").val(),
+				Round: $("#selectRound").val()
 			},
 			dataType: "JSON",
 			beforeSend: function() {

@@ -20,15 +20,13 @@
 
 	$_SESSION['Bill_DVLK'] = NULL;
 
+	// lấy thông tin học kì và niên khóa lưu vào session
+
 	$_SESSION['nk'] =  $_GET['nk'];
 
 	$_SESSION['hk'] = $_GET['hk'];
 
-	$_SESSION['MaDP'] = $_GET['madp'];
-
 	$_SESSION['NHHK'] = $_GET['nk'].$_GET['hk'];
-
-	// lấy thông tin học kì và niên khóa lưu vào session
 
 	$sql = "select * from theodoihocphi.choice where value = ".$_SESSION['nk']." or value = ".$_SESSION['hk'];
 
@@ -50,11 +48,17 @@
 		}
 	}
 
-	// lấy thông tin học kì và niên khóa lưu vào session
+	// lấy thông tin ĐỊA PHƯƠNG lưu vào session
+
+	$_SESSION['MaDP'] = $_GET['madp'];
 
 	$queryDVLK = thongTinDiaPhuong($curl, $madp = $_SESSION['MaDP']);
 
 	$_SESSION['descriptMaDP'] = $queryDVLK['data'][0]['TenDP'];
+
+	// lấy thông tin ĐỢT QUYẾT TOÁN lưu vào session
+
+	
 	
 	echo json_encode(['rootUrl' => $conf['rootUrl']]);
 ?>
