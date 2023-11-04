@@ -18,7 +18,8 @@
 
 	$curl = connectCurl();
 
-	echo var_dump($_SESSION['BillPaid_DVLK']);	
+	echo var_dump($_SESSION['arrResult_DSSV']);
+
 
 ?>
 

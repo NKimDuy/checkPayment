@@ -13,146 +13,167 @@
 
 	//Custom đợt quyết toán
 
-	$_SESSION['round'] = $_GET['Round'];
+		$_SESSION['round'] = $_GET['Round'];
 
-	$_SESSION['year'] = $_GET['Year'];
-	
-	if ($$_SESSION['round'] == "r1") {
-
-		$_SESSION['dateRange'] = '01/12/'.substr($_SESSION['year'],0,4).' - 31/03/'.substr($_SESSION['year'],5,4);
-
-	} elseif ($$_SESSION['round'] == "r2") {
-
-		$_SESSION['dateRange'] = '01/04/'.substr($_SESSION['year'],5,4).' - 31/07/'.substr($_SESSION['year'],5,4);
-
-	} else {
+		$_SESSION['year'] = $_GET['Year'];
 		
-		$_SESSION['dateRange'] = '01/08/'.substr($_SESSION['year'],5,4).' - 30/11/'.substr($_SESSION['year'],5,4);
+		if ($_SESSION['round'] == "r1") {
 
-	}
+			$_SESSION['dateRange'] = '01/12/'.substr($_SESSION['year'],0,4).' - 31/03/'.substr($_SESSION['year'],5,4);
 
-	$_SESSION['fromDate'] =  substr($_SESSION['dateRange'],0,10);
+		} elseif ($_SESSION['round'] == "r2") {
 
-	$_SESSION['toDate'] = substr($_SESSION['dateRange'],13,10);
+			$_SESSION['dateRange'] = '01/04/'.substr($_SESSION['year'],5,4).' - 31/07/'.substr($_SESSION['year'],5,4);
 
+		} else {
+			
+			$_SESSION['dateRange'] = '01/08/'.substr($_SESSION['year'],5,4).' - 30/11/'.substr($_SESSION['year'],5,4);
 
+		}
+
+		$_SESSION['fromDate'] =  substr($_SESSION['dateRange'],0,10);
+
+		$_SESSION['toDate'] = substr($_SESSION['dateRange'],13,10);
 
 	//Lây dữ liệu đóng học phí để quyết toán
 
-	$curl = connectCurl();
+		$curl = connectCurl();
 
-	$con = connectSql();
+		$con = connectSql();
 
-	$_SESSION['BillPaid_DVLK'] = [];
+		$_SESSION['BillPaid_DVLK'] = [];
 
-	$query = thongTinDongHocPhiDiaPhuong($curl, $madvpc = 'TX', $fromdate = $_SESSION['fromDate'], $todate = $_SESSION['toDate'], $madp = $_SESSION['MaDP']);
+		$query = thongTinDongHocPhiDiaPhuong($curl, $madvpc = 'TX', $fromdate = $_SESSION['fromDate'], $todate = $_SESSION['toDate'], $madp = $_SESSION['MaDP']);
 
-	$_SESSION['BillPaid_DVLK'] = json_decode(bzdecompress(base64_decode($query['data'])), true);
+		$_SESSION['BillPaid_DVLK'] = json_decode(bzdecompress(base64_decode($query['data'])), true);
 
 	// Lất dữ liệu phần trăm từ  sql
 
-	$sql = "select * 
-	
-			from link_unit_accounting
-				
-			where unit = '" . $_SESSION['MaDP'] . "'";
-	
-	$query_Percent = mysqli_query($con, $sql);
+		$sql = "select * 
+		
+				from link_unit_accounting
+					
+				where unit = '" . $_SESSION['MaDP'] . "'";
+		
+		$query_Percent = mysqli_query($con, $sql);
 
-	$_SESSION['percent'] = []; //mảng chứa các lớp và phần trăm thuộc ĐVLK
+		$_SESSION['percent'] = []; //mảng chứa các lớp và phần trăm thuộc ĐVLK
 
-	if($query_Percent)
-	{
-		while($r = mysqli_fetch_assoc($query_Percent))
+		if($query_Percent)
 		{
-			$temp = [];
+			while($r = mysqli_fetch_assoc($query_Percent))
+			{
+				$temp = [];
 
-			$temp = [	
-						"MaLop" => $r['id_class'], 
-						"NhomTo" => $r['id_group'],
-						"TenLop" => $r['class_name'],
-						"PhanTram" => $r['percent_accounting'],
-						"TongTien" => 0
-					];
-			
-			array_push($_SESSION['percent'], $temp);
+				$temp = [	
+							"MaLop" => $r['id_class'], 
+							"NhomTo" => $r['id_group'],
+							"TenLop" => $r['class_name'],
+							"PhanTram" => $r['percent_accounting'],
+							"TongTien" => 0
+						];
+				
+				array_push($_SESSION['percent'], $temp);
+			}
 		}
-	}
+
+	// Lất dữ liệu để so đã quyết toán hay chưa
+		$sql_IDPThu = "select id_bill from student_accounting";
+
+		$query_IDPThu = mysqli_query($con, $sql_IDPThu);
+
+		$dsIDPThu = [];
+
+		if($query_IDPThu)
+		{
+			while($r = mysqli_fetch_assoc($query_IDPThu))
+			{
+				
+				array_push($dsIDPThu, $r['id_bill']);
+			}
+		}
 
 	//Chuẩn bị dữ liệu để tạo Phiếu Quyết tóan
 
-	$_SESSION['arrList_Class'] = [];
+		$_SESSION['arrList_Class'] = [];
 
-	$_SESSION['arrResult_DSSV'] = [];
+		$_SESSION['arrResult_DSSV'] = [];
 
-	$arrResult_Accounting = [];
+		$arrResult_Accounting = [];
 
-	$_SESSION['paid_DVLK'] = 0;
+		$_SESSION['paid_DVLK'] = 0;
 
-	$_SESSION['accounting_DVLK'] = 0;
+		$_SESSION['accounting_DVLK'] = 0;
 
-	foreach($_SESSION['percent'] as $r1){
+		foreach($_SESSION['percent'] as $r1){
 
-		foreach($_SESSION['BillPaid_DVLK'] as $r2){
+			foreach($_SESSION['BillPaid_DVLK'] as $r2){
 
-			$SoCTu = trim($r2['TTPThu']["SoCTu"]);
+				$SoCTu = trim($r2['TTPThu']["SoCTu"]);
 
-			$check = substr(trim($SoCTu),0,2);
+				$check = substr(trim($SoCTu),0,2);
 
-			if ($check != "TX") {
+				if ($check != "TX") {
 
-				$temp = [];
+					if (!in_array($r2['IDPThu'], $dsIDPThu)) {
 
-				$paid_SV = 0;
+						$temp = [];
 
-				//tính quyết toán theo Lớp
-				foreach($r2['DSMH'] as $r3){
+						$paid_SV = 0;
 
-					if ($r1['NhomTo'] == $r3['NhomTo']){
+						//tính quyết toán theo Lớp
+						foreach($r2['DSMH'] as $r3){
 
-						$r1['TongTien'] += (int)$r3['PhaiThuMH'];
+							if ($r1['NhomTo'] == $r3['NhomTo']){
 
-						$paid_SV += (int)$r3['PhaiThuMH'];
+								$r1['TongTien'] += (int)$r3['PhaiThuMH'];
+
+								$paid_SV += (int)$r3['PhaiThuMH'];
+
+							}
+
+						}
+
+						$date = $r2['TTPThu']["NgayTChi"];
+
+						$date = substr($date,8,2)."/".substr($date,5,2)."/".substr($date,0,4);//custom lại thành d/m/Y
+
+						$ghiChu = $r2['TTPThu']["GHICHUPT"];
+
+						if ($paid_SV != 0) {
+
+							$temp = [	
+								"MaSV" => $r2['MaSV'], 
+								"HoLotSV" => $r2['HoLotSV'],
+								"TenSV" => $r2['TenSV'],
+								"NhomTo" => $r1['NhomTo'],
+								"PhaiThu" => $paid_SV,
+								"NgayDong" => $date,
+								"GhiChu" => $ghiChu,
+								"IDPThu" => $r2['IDPThu']
+							];
+				
+						}
+
+						//DSSV đóng học phí phân theo lớp
+
+						if ($temp != []) array_push($_SESSION['arrResult_DSSV'], $temp);
 
 					}
 
 				}
 
-				$date = $r2['TTPThu']["NgayTChi"];
-
-				$ghiChu = $r2['TTPThu']["GHICHUPT"];
-
-				if ($paid_SV != 0) {
-
-					$temp = [	
-						"MaSV" => $r2['MaSV'], 
-						"HoLotSV" => $r2['HoLotSV'],
-						"TenSV" => $r2['TenSV'],
-						"NhomTo" => $r1['NhomTo'],
-						"PhaiThu" => $paid_SV,
-						"NgayDong" => $date,
-						"GhiChu" => $ghiChu
-					];
-		
-				}
-
-				//DSSV đóng học phí phân theo lớp
-
-				if ($temp != []) array_push($_SESSION['arrResult_DSSV'], $temp);
-
 			}
 
+			$r1['QuyetToan'] = ($r1['TongTien']*$r1['PhanTram'])/100;
+
+			if ($r1['TongTien'] != 0) array_push($_SESSION['arrList_Class'], $r1); //Danh sách các lớp có quyết toán
+
+			$_SESSION['paid_DVLK'] += $r1['TongTien']; //tổng số tiền SV đã đóng
+
+			$_SESSION['accounting_DVLK'] += $r1['QuyetToan']; //Số tiền quyết toán cho ĐVLk
+		
 		}
-
-		$r1['QuyetToan'] = ($r1['TongTien']*$r1['PhanTram'])/100;
-
-		if ($r1['TongTien'] != 0) array_push($_SESSION['arrList_Class'], $r1); //Danh sách các lớp có quyết toán
-
-		$_SESSION['paid_DVLK'] += $r1['TongTien']; //tổng số tiền SV đã đóng
-
-		$_SESSION['accounting_DVLK'] += $r1['QuyetToan']; //Số tiền quyết toán cho ĐVLk
-	
-	}
 
 	array_push($arrResult_Accounting, $_SESSION['MaDP'], $_SESSION['descriptMaDP'], $_SESSION['dateRange'], $_SESSION['paid_DVLK'], $_SESSION['accounting_DVLK']);
 	

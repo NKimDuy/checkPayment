@@ -10,12 +10,13 @@
 
 	// thiết lập ID của phiếu quyết toán
 	$idAccounting = $_SESSION['MaDP']
-					.$_SESSION['year']
+					.date("ymd")
+					.substr($_SESSION['year'],5,4)
 					.$_SESSION['round']; 
 	
 	/* thêm phiếu quyết toán vào bảng accounting  */
 
-	$SQL_accounting = "insert into accounting (ID_accounting, ma_dvlk, dvlk, create_day, year, round, ou_confirm, dvlk_confirm, total, total_discount, user_create, status) values('" .
+	$SQL_accounting = "insert into accounting (ID_accounting, ma_dvlk, dvlk, create_day, year, round, ou_confirm, dvlk_confirm, total, total_discount, user_create, dateRange, status) values('" .
 									$idAccounting . "', '" .  //ID_accounting
 									$_SESSION['MaDP'] . "', '" . //ma_dvlk
 									$_SESSION['descriptMaDP'] . "', '" . //dvlk
@@ -27,6 +28,7 @@
 									$_SESSION['paid_DVLK'] . "', '" . //total
 									$_SESSION['accounting_DVLK'] . "', '" . //total_discount
 									$_SESSION['mail'] . "', '" . //user_create
+									$_SESSION['dateRange'] . "', '" . //user_create
 									0 . "')"; 	//status					
 	
 	$insert_SQL_accounting = mysqli_query($con, $SQL_accounting);								
@@ -43,6 +45,7 @@
 																				. trim($r['HoLotSV']) . "', '" 
 																				. trim($r['TenSV']) . "', '" 
 																				. trim($r['NhomTo']) . "', '"	
+																				. trim($r['IDPThu']) . "', '"	
 																				. trim($r['PhaiThu']) . "', '" 
 																				. trim($r['NgayDong']) . "', '" 
 																				. trim($r['GhiChu']) . "', '" 
@@ -59,22 +62,11 @@
 
 	  } else {
 
-		if ($insert_SQL_student_accounting) {
+		$sql_DEL = "delete from accounting where ID_accounting = '" . $idAccounting . "'";
 
-			$sql_DEL = "delete from accounting where ID_accounting = '" . $idAccounting . "'";
-	
-			$query_DEL = mysqli_query($con, $sql_DEL);
+		$query_DEL = mysqli_query($con, $sql_DEL);
 
-		}
-
-		if (!empty($_SESSION['arrResult_DSSV'])) {
-
-			$confirm =  "Dữ liệu bị trùng với phiếu đã tạo, vui lòng kiểm tra lại";
-
-		} else {
-
-			$confirm = "Dữ liệu đóng học phí trống, không thể tạo phiếu";
-		}
+		$confirm =  "Cập nhật không thành công";
 
 	  }
 
