@@ -8,24 +8,21 @@
 
 	$con = connectSql();
 
+	// thiết lập ID của phiếu quyết toán
 	$idAccounting = $_SESSION['MaDP']
-					.substr($_SESSION['dateRange'],8,2)
-					.substr($_SESSION['dateRange'],3,2)
-					.substr($_SESSION['dateRange'],0,2)
-					.substr($_SESSION['dateRange'],21,2)
-					.substr($_SESSION['dateRange'],16,2)
-					.substr($_SESSION['dateRange'],13,2); // thiết lập ID của phiếu quyết toán
+					.$_SESSION['year']
+					.$_SESSION['round']; 
 	
 	/* thêm phiếu quyết toán vào bảng accounting  */
 
-	$SQL_accounting = "insert into accounting (ID_accounting, ma_dvlk, dvlk, create_day, start_day, end_day, luong_confirm, dvlk_confirm, total, total_discount, user_create, status) values('" .
+	$SQL_accounting = "insert into accounting (ID_accounting, ma_dvlk, dvlk, create_day, year, round, ou_confirm, dvlk_confirm, total, total_discount, user_create, status) values('" .
 									$idAccounting . "', '" .  //ID_accounting
 									$_SESSION['MaDP'] . "', '" . //ma_dvlk
 									$_SESSION['descriptMaDP'] . "', '" . //dvlk
 									date("Y-m-d") . "', '" . //create_day	
-									date_format(date_create_from_format("d/m/Y",$_SESSION['fromDate']),"Y-m-d") . "', '" . //start_day
-									date_format(date_create_from_format("d/m/Y",$_SESSION['toDate']),"Y-m-d") . "', '" . //end_day
-									0 . "', '" . //luong_confirm
+									$_SESSION['year'] . "', '" . //year
+									$_SESSION['round'] . "', '" . //round
+									0 . "', '" . //ou_confirm
 									0 . "', '" . //dvlk_confirm
 									$_SESSION['paid_DVLK'] . "', '" . //total
 									$_SESSION['accounting_DVLK'] . "', '" . //total_discount

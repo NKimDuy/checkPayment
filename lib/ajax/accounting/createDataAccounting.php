@@ -13,23 +13,29 @@
 
 	//Custom đợt quyết toán
 
-	if ($_GET['Round'] = "r1") {
+	$_SESSION['round'] = $_GET['Round'];
 
-		$_SESSION['dateRange'] = '01/12/'.substr($_GET['Year'],0,4).' - 31/03/'.substr($_GET['Year'],5,4);
+	$_SESSION['year'] = $_GET['Year'];
+	
+	if ($$_SESSION['round'] == "r1") {
 
-	} elseif ($_GET['Round'] = "r2") {
+		$_SESSION['dateRange'] = '01/12/'.substr($_SESSION['year'],0,4).' - 31/03/'.substr($_SESSION['year'],5,4);
 
-		$_SESSION['dateRange'] = '01/04/'.substr($_GET['Year'],5,4).' - 31/07/'.substr($_GET['Year'],5,4);
+	} elseif ($$_SESSION['round'] == "r2") {
+
+		$_SESSION['dateRange'] = '01/04/'.substr($_SESSION['year'],5,4).' - 31/07/'.substr($_SESSION['year'],5,4);
 
 	} else {
 		
-		$_SESSION['dateRange'] = '01/08/'.substr($_GET['Year'],5,4).' - 30/11/'.substr($_GET['Year'],5,4);
+		$_SESSION['dateRange'] = '01/08/'.substr($_SESSION['year'],5,4).' - 30/11/'.substr($_SESSION['year'],5,4);
 
 	}
 
 	$_SESSION['fromDate'] =  substr($_SESSION['dateRange'],0,10);
 
 	$_SESSION['toDate'] = substr($_SESSION['dateRange'],13,10);
+
+
 
 	//Lây dữ liệu đóng học phí để quyết toán
 
@@ -65,7 +71,8 @@
 						"MaLop" => $r['id_class'], 
 						"NhomTo" => $r['id_group'],
 						"TenLop" => $r['class_name'],
-						"PhanTram" => $r['percent_accounting']
+						"PhanTram" => $r['percent_accounting'],
+						"TongTien" => 0
 					];
 			
 			array_push($_SESSION['percent'], $temp);

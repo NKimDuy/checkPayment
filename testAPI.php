@@ -18,13 +18,8 @@
 
 	$curl = connectCurl();
 
-	$year = '2022-2023';
+	echo var_dump($_SESSION['BillPaid_DVLK']);	
 
-	$round = 'r1';
+?>
 
-	$date = '01/12/'.substr($year,0,4).' - 31/03/'.substr($year,5,4);
-
-	echo $date;
-
-	?>
 
