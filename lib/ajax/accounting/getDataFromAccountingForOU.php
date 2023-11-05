@@ -28,32 +28,37 @@
 		while($r = mysqli_fetch_assoc($query))
 		{
 			$temp = [];
-			
-			array_push($temp, $r['ID_accounting']);
-			
-			array_push($temp, $r['ma_dvlk']);
-			
-			array_push($temp, $r['dvlk']);
-			
-			array_push($temp, date_format(date_create_from_format("Y-m-d",$r['create_day']),"d/m/Y"));
-			
-			array_push($temp, date_format(date_create_from_format("Y-m-d",$r['start_day']),"d/m/Y"));
-			
-			array_push($temp, date_format(date_create_from_format("Y-m-d",$r['end_day']),"d/m/Y"));
-			
-			array_push($temp, $r['total']);
-			
-			array_push($temp, $r['percent']);
 
-			array_push($temp, $r['total_discount']);
+			if ($r['round'] == "r1") {
 
-			array_push($temp, $r['dvlk_confirm']);
+				$round = "Đợt 1";
+	
+			} elseif ($r['round'] == "r2") {
+	
+				$round = "Đợt 2";
+	
+			} else {
+				
+				$round = "Đợt 3";
+	
+			}
 
-			array_push($temp, $r['luong_confirm']);
-
-			array_push($temp, $r['accounting_day']);
-
-			array_push($temp, $r['status']);
+			$temp = [	
+				"ID_accounting" => $r['ID_accounting'], 
+				"MaDP" => $r['ma_dvlk'],
+				"TenDP" => $r['dvlk'],
+				"createDay" => date_format(date_create_from_format("Y-m-d",$r['create_day']),"d/m/Y"),
+				"Year" => substr($r['year'],5,4),
+				"Round" => $round,
+				"PhaiThu" => $r['total'],
+				"QuyetToan" => $r['total_discount'],
+				"DPXacNhan" => $r['dvlk_confirm'],
+				"OUXacNhan" => $r['ou_confirm'],
+				"NgayQT" => $r['accounting_day'],
+				"dateRange" => $r['dateRange'],
+				"TrangThai" => $r['status'],
+				"Khac" => $r['note']
+			];
 			
 			array_push($data, $temp);
 		}
