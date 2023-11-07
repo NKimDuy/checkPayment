@@ -1,5 +1,5 @@
 <?php
-require('./lib/tfpdf/tfpdf.php');
+require('../../../lib/tfpdf/tfpdf.php');
 
 class PDF extends tFPDF
 {
@@ -88,5 +88,3 @@ $pdf->Output();
 
 
 ?>
-
-

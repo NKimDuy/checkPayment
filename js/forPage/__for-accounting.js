@@ -20,7 +20,7 @@ function seeListSV(NhomTo, MaLop, TenLop)
 
 			let title =  '[ ' + result['info'][0] + '] ' + result['info'][1] ;
 			
-			let table = "<table id='tbShowListStudentAcc' class='table table-bordered table-striped'>";
+			let table = "<table id='tbShowListStudentAcc' class='table table-bordered'>";
 
 			var stt = 1;
 
@@ -61,7 +61,7 @@ function seeListSV(NhomTo, MaLop, TenLop)
 			
 			$('#Modal-4').modal('show')
 
-			formatTable('tbShowListStudentAcc',5);
+			formatTableExPDF_Sang('tbShowListStudentAcc', 5, TenLop, result['info'][2]);
             
 		},
 		complete: function() {
@@ -236,7 +236,7 @@ function seePQT(IdAccounting) {
 
 				//Xem chi DSSV
 				body += '<td>' +
-				'<a href="javascript:btnPDF(' + "'" + value['NhomTo'].trim() + "', '" + value['MaLop'].trim() + "', '" + value['TenLop'].trim() +  "'" + ');">' + 
+				'<a href="javascript:ExportPDF(' + "'" + value['NhomTo'].trim() + "', '" + value['MaLop'].trim() + "', '" + value['TenLop'].trim() +  "'" + ');">' + 
 					'<button type="button" class="btn btn-block btn-danger">'+
 						'PDF <i class="fa fa-file-pdf-o"></i>'+
 					'</button>'+
@@ -361,6 +361,30 @@ function OUconfirm(IdAccounting) {
 				$('#loading').modal('hide');
 				alert(result['confirm']);
 				location.reload();
+			}
+		});
+	});
+	
+}
+
+/* 
+	Xuất PDF Quyết toán
+*/
+function ExportPDF(NhomTo,MaLop,TenLop) {
+	
+	showDialogForAccounting("Bạn muốn xuất PDF?");
+	
+	$("#yesdoIt").click(() => {
+		$.ajax({
+			url: "./lib/ajax/Export/ExPDF.php",
+			data: {
+				NhomTo: NhomTo,
+				MaLop: MaLop,
+				TenLop: TenLop
+			},
+			dataType: "JSON",
+			success: function(result) {
+				alert('Con cu');
 			}
 		});
 	});

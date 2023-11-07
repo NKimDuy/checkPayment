@@ -18,7 +18,7 @@
 
 	$NhomTo = $_GET['NhomTo'];
 
-	$arrInfoClass = [$_GET['MaLop'], $_GET['TenLop']];
+	$arrInfoClass = [$_GET['MaLop'], $_GET['TenLop'], $_SESSION['descriptMaDP']];
 
 	$arr_ListSV = [];
 

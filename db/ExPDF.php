@@ -1,10 +1,8 @@
 <?php
-require('./lib/tfpdf/tfpdf.php');
+require('../../lib/tfpdf/tfpdf.php');
 
 class PDF extends tFPDF
 {
-
-    
 
     function addHeader() 
     {
@@ -88,5 +86,3 @@ $pdf->Output();
 
 
 ?>
-
-
