@@ -16,10 +16,15 @@
 	
 	/* thêm phiếu quyết toán vào bảng accounting  */
 
-	$SQL_accounting = "insert into accounting (ID_accounting, ma_dvlk, dvlk, create_day, year, round, ou_confirm, dvlk_confirm, total, total_discount, user_create, dateRange, status) values('" .
+	//Tạo % trả thêm
+	$percent_another = 0;
+	$total_real = (($_SESSION['paid_DVLK']*$percent_another) + $_SESSION['accounting_DVLK']);
+
+	$SQL_accounting = "insert into accounting (ID_accounting, ma_dvlk, dvlk, tier, create_day, year, round, ou_confirm, dvlk_confirm, total, total_discount, user_create, dateRange, status, percent_another, total_real) values('" .
 									$idAccounting . "', '" .  //ID_accounting
 									$_SESSION['MaDP'] . "', '" . //ma_dvlk
 									$_SESSION['descriptMaDP'] . "', '" . //dvlk
+									$_SESSION['tier'] . "', '" . //tier
 									date("Y-m-d") . "', '" . //create_day	
 									$_SESSION['year'] . "', '" . //year
 									$_SESSION['round'] . "', '" . //round
@@ -29,7 +34,9 @@
 									$_SESSION['accounting_DVLK'] . "', '" . //total_discount
 									$_SESSION['mail'] . "', '" . //user_create
 									$_SESSION['dateRange'] . "', '" . //user_create
-									0 . "')"; 	//status					
+									0 . "', '" . //status
+									$percent_another . "', '" . 
+									$total_real ."')"; 						
 	
 	$insert_SQL_accounting = mysqli_query($con, $SQL_accounting);								
 

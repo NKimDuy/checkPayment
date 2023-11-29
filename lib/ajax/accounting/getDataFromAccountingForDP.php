@@ -17,7 +17,7 @@
 	
 			from accounting 
 			
-			where ma_dvlk = '" . $_SESSION['MaDP'] . "' and status = 1";
+			where ma_dvlk = '" . $_SESSION['MaDP'] . "' and status = 1 or status = 2";
 	
 	$query = mysqli_query($con, $sql);
 
@@ -43,10 +43,25 @@
 	
 			}
 
+			if ($r['tier'] == "tx") {
+
+				$tier = "Đào tạo từ xa (Truyền thống)";
+	
+			} elseif ($r['round'] == "vl") {
+	
+				$tier = "Vừa làm vừa học";
+	
+			} elseif ($r['round'] == "tt") {
+				
+				$tier = "Đào tạo từ xa (Trực tuyến)";
+	
+			}
+
 			$temp = [	
 				"ID_accounting" => $r['ID_accounting'], 
 				"MaDP" => $r['ma_dvlk'],
 				"TenDP" => $r['dvlk'],
+				"HeDT" => $tier,
 				"createDay" => date_format(date_create_from_format("Y-m-d",$r['create_day']),"d/m/Y"),
 				"Year" => substr($r['year'],5,4),
 				"Round" => $round,

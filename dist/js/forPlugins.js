@@ -83,7 +83,7 @@ function formatTableExport(id, len) {
 
 }
 
-function formatTableExPDF_Sang(id, len, TenLop, DP) {
+function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
 
   var x = "#" + id;
 
@@ -96,121 +96,116 @@ function formatTableExPDF_Sang(id, len, TenLop, DP) {
         className: "btn btn-danger",
         extend: 'pdfHtml5',
         download: 'open',
+        footer: true,
         exportOptions: {
           columns: ':not(:last-child)'
         },
-        title: function() {return "TAO LÀ SANG"},
+        title: function() {return ""},
         customize: function (doc) {
-
-          doc['header']=(function() {
-            return {
-                columns: [
-                    {
-                      text: ['BỘ GIÁO DỤC VÀ ĐÀO TẠO'],
-                      alignment: 'left'
-                    },
-
-                    {
-                      text: ['CỘNG HÒA XÃ HỘI CHỦ NGHĨA'],
-                      alignment: 'right'
-                    }
-                ],
-                margin: 20,
-                
-            }
-          });
 
           // Thêm nội dụng vào đầu tài liệu
           doc.content.splice(0, 0, {
-            text: 'BỘ GIÁO DỤC VÀO ĐÀO TẠO  					             CỘNG HÒA XÃ HỘI CHŨ NGHĨA VIỆT NAM',
-            alignment: 'left'
+            columns: [
+              {
+                text: ['BỘ GIÁO DỤC VÀ ĐÀO TẠO'],
+                alignment: 'center'
+              },
+
+              {
+                text: ['CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM'],
+                alignment: 'center'
+              },
+
+            ],
+            alignment: 'center'
           });
-          
+
           doc.content.splice(1, 0, {
-            text: 'TRƯỜNG ĐẠI HỌC MỞ  			                                           Độc lập - Tự do - Hạnh phúc',
-            alignment: 'left'
+            columns: [
+              {
+                text: ['TRƯỜNG ĐẠI HỌC MỞ TP. HỒ CHÍ MINH'],
+                alignment: 'center'
+              },
+
+              {
+                text: ['Độc lập - Tự do - Hạnh phúc'],
+                alignment: 'center'
+              },
+
+            ],
+            margin: [0,0,0,15],
+            alignment: 'center'
           });
-          doc.content[1].margin = [13,0,0,0];
 
           doc.content.splice(2, 0, {
-            text: 'THÀNH PHỐ HỒ CHÍ MINH',
-            alignment: 'left'
-          });
-
-          doc.content.splice(3, 0, {
             text: 'DANH SÁCH ĐÓNG HỌC PHÍ',
             alignment: 'center'
           });
 
-          doc.content.splice(4, 0, {
+          doc.content.splice(3, 0, {
             text: "Lớp: " + TenLop,
             alignment: 'center'
           });
 
-          doc.content.splice(5, 0, {
+          doc.content.splice(4, 0, {
             text: "Tại "+ DP,
             alignment: 'center'
           });
 
-          doc.content.splice(6, 0, {
-            text: 'Từ ngày 01/04/2023 đến 31/07/2023',
+          doc.content.splice(5, 0, {
+            text: "(" + DR + ")",
+            alignment: 'center',
+            margin: [0,0,0,20]
+          });
+
+          doc.content.push({
+            text: ' ',
+            alignment: 'left'
+          });
+
+          doc.content.push({
+            columns: [
+              {
+                text: ['\n P. HIỆU TRƯỞNG'],
+                alignment: 'center'
+              },
+
+              {
+                text: ['\n TRƯỞNG PHÒNG TC-KT'],
+                alignment: 'center'
+              },
+
+              {
+                text: [' TP. HCM, ngày      tháng       năm     \n NGƯỜI LẬP BẢNG'],
+                alignment: 'center'
+              },
+
+            ],
+            alignment: 'center',
+            margin: [0,0,0,50]
+          });
+
+          doc.content.push({
+            columns: [
+              {
+                text: ['Lê Nguyễn Quốc Khang'],
+                alignment: 'center'
+              },
+
+              {
+                text: ['Nguyễn Tấn Lượng'],
+                alignment: 'center'
+              },
+
+              {
+                text: ['Nguyễn Thành Lộc'],
+                alignment: 'center'
+              },
+
+            ],
             alignment: 'center'
           });
 
-          doc.content.splice(7, 0, {
-            text: ' ',
-            alignment: 'center'
-          });
-
-          doc.content.push({
-            text: ' ',
-            alignment: 'left'
-          });
-
-          doc.content.push({
-            text: 'Số tiền bằng chữ: bảy mươi lăm chịu năm trăm mười mấy ngàn á',
-            alignment: 'left'
-          });
-
-          doc.content.push({
-            text: ' ',
-            alignment: 'left'
-          });
-
-          doc.content.push({
-            text: 'Tp. Hồ Chí Minh, ngày 21 tháng 08 năm 2023',
-            alignment: 'left',
-            margin: [230, 0,0,0]
-          });
-
-          doc.content.push({
-            text: ' ',
-            alignment: 'left'
-          });
-
-          doc.content.push({
-            text: 'P.HIỆU TRƯỞNG	                        TRƯỞNG PHÒNG TC-KT		                           NGƯỜI LẬP BẢNG',
-            alignment: 'left',
-            margin: [10, 0,0,0]
-          });
-
-          doc.content.push({
-            text: ' ',
-            alignment: 'left'
-          });
-          doc.content.push({
-            text: ' ',
-            alignment: 'left'
-          });
-          doc.content.push({
-            text: ' ',
-            alignment: 'left'
-          });
-
-          doc.content.push({
-            text: 'Lê Nguyễn Quốc Khang		               Nguyễn Tấn Lượng		                              Nguyễn Thành Lộc',
-            alignment: 'left'
-          });
         }
 
       },
@@ -221,21 +216,161 @@ function formatTableExPDF_Sang(id, len, TenLop, DP) {
         download: 'open',
       }
     ]
-});
+  });
+
+}
+
+function formatTableExPDF_DSL(id, len, DR, DP, He) {
+
+  var x = "#" + id;
+
+	$(x).DataTable({
+    dom: 'Bfrtip',
+    "pageLength": len,
+    buttons: [
+      {
+        text:'PDF',
+        className: "btn btn-danger",
+        extend: 'pdfHtml5',
+        download: 'open',
+        footer: true,
+        exportOptions: {
+          columns: ':not(:last-child)'
+        },
+        title: function() {return ""},
+        customize: function (doc) {
+
+          // Thêm nội dụng vào đầu tài liệu
+          doc.content.splice(0, 0, {
+            columns: [
+              {
+                text: ['BỘ GIÁO DỤC VÀ ĐÀO TẠO'],
+                alignment: 'center'
+              },
+
+              {
+                text: ['CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM'],
+                alignment: 'center'
+              },
+
+            ],
+            alignment: 'center'
+          });
+
+          doc.content.splice(1, 0, {
+            columns: [
+              {
+                text: ['TRƯỜNG ĐẠI HỌC MỞ TP. HỒ CHÍ MINH'],
+                alignment: 'center'
+              },
+
+              {
+                text: ['Độc lập - Tự do - Hạnh phúc'],
+                alignment: 'center'
+              },
+
+            ],
+            margin: [0,0,0,15],
+            alignment: 'center'
+          });
+
+          doc.content.splice(2, 0, {
+            text: 'BẢNG QUYẾT TOÁN HỌC PHÍ',
+            alignment: 'center'
+          });
+
+          doc.content.splice(3, 0, {
+            text: "Hệ "+ He,
+            alignment: 'center',
+          });
+
+          doc.content.splice(4, 0, {
+            text: "(" + DR + ")",
+            alignment: 'center',
+          });
+
+          doc.content.splice(5, 0, {
+            text: "Tại "+ DP,
+            alignment: 'center',
+            margin: [0,0,0,20]
+          });
+
+          doc.content.push({
+            text: ' ',
+            alignment: 'left'
+          });
+
+          doc.content.push({
+            columns: [
+              {
+                text: ['ĐẠI DIỆN \n TRƯỜNG ĐẠI HỌC MỞ TP.HCM'],
+                alignment: 'center'
+              },
+
+              {
+                text: ['ĐẠI DIỆN \n' + DP],
+                alignment: 'center'
+              },
+
+            ],
+            alignment: 'center',
+          });
+
+          doc.content.push({
+            columns: [
+              {
+                columns: [
+                  
+                  {
+                    text: ['Hiệu trưởng'],
+                    alignment: 'center'
+                  },
+
+                  {
+                    text: ['Kế toán trưởng'],
+                    alignment: 'center'
+                  }
+
+                ],
+                alignment: 'center'
+              },
+
+              {
+                columns: [
+                  
+                  {
+                    text: ['Hiệu trưởng'],
+                    alignment: 'center'
+                  },
+
+                  {
+                    text: ['Kế toán trưởng'],
+                    alignment: 'center'
+                  }
+
+                ],
+                alignment: 'center'
+              },
+
+            ],
+            alignment: 'center',
+          });
+
+        }
+
+      },
+      {
+        text:'EXCEL',
+        className: "btn btn-success",
+        extend: 'excelHtml5',
+        download: 'open',
+      }
+    ]
+  });
 
 }
 
 
-
-$("#btnPDF").click((id) => {
-  var opt = {
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
-        pagebreak:    {avoid: ['#sign']}
-      };
-  
-      
-      html2pdf($("id"), opt)
-})
 
 $(function () {
   //Initialize Select2 Elements

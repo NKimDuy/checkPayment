@@ -15,7 +15,7 @@
 
 				if (result['resultDP'] == null) {
 
-					optionDVLK = "<option value='none' selected>Chọn Đơn vị liên kết</option>";	
+					optionDVLK = "<option value='All' selected>Chọn Đơn vị liên kết</option>";	
 					
 				} else {
 					
@@ -65,7 +65,7 @@
 
 						optionSchoolyear += "<option value='" + value[0] + "'>" + value[1] + "</option>";		
 						
-					} else {
+					} else if (value[2] == 'semester') {
 						
 						optionSemester += "<option value='" + value[0] + "'>" + value[1] + "</option>";
 

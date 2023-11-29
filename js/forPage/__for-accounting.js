@@ -1,13 +1,14 @@
-/*
+	/*
 	Hiển thị DSSV theo lớp quyết toán
 */
-function seeListSV(NhomTo, MaLop, TenLop)
+function seeListSV(NhomTo, MaLop, dateRange, TenLop)
 {
 	$.ajax({
 		url: "./lib/ajax/accounting/getListStudentAcc.php",
 		data: {
 			'NhomTo': NhomTo,
 			'MaLop': MaLop, 
+			'dateRange': dateRange,
 			'TenLop': TenLop
 		},
 		dataType: "JSON",
@@ -23,6 +24,7 @@ function seeListSV(NhomTo, MaLop, TenLop)
 			let table = "<table id='tbShowListStudentAcc' class='table table-bordered'>";
 
 			var stt = 1;
+			var SUM = 0;
 
 			let header = "<thead>";
 			header += "<tr>";
@@ -51,17 +53,29 @@ function seeListSV(NhomTo, MaLop, TenLop)
 				body += "</tr>";
 				
 				stt += 1;
+				SUM += parseInt(value['PhaiThu']);
 			}
 
 			body += "</tbody>";
 
-			$("#bodyModal-4").html(table + header + body +  "</table>"); //custom cái body của Modal1
+			footer = 	'<tfoot><tr>'+
+
+							"<td></td><td></td>" +
+
+							"<td><h5><b>TỔNG CỘNG: </b></h5></td>" + "<td></td>" +
+
+							'<td><h5>' + formatCurrency(SUM) + '</h5></td>' + "<td></td><td></td><td></td>" +
+
+						'</tr></tfoot>';
+
+
+			$("#bodyModal-4").html(table + header + body + footer +  "</table>"); //custom cái body của Modal1
 
 			$("#titleModal-4").html(title); //Đôi title của Modal1
 			
 			$('#Modal-4').modal('show')
 
-			formatTableExPDF_Sang('tbShowListStudentAcc', 5, TenLop, result['info'][2]);
+			formatTableExPDF_DSSV('tbShowListStudentAcc', 5, TenLop, dateRange, result['info'][2]);
             
 		},
 		complete: function() {
@@ -152,17 +166,19 @@ function seePQT(IdAccounting) {
 									 
 							'<td><label for="confirm">Đơn vị liên kết: </label></td>' +
 
-							'<td><label>[' + result['accounting'][0]['MaDP']  + '] ' + result['accounting'][0]['MaDP'] + '</label></td>' +
-							
-							'<td></td><td></td>' +
+							'<td><label>[' + result['accounting'][0]['MaDP']  + '] ' + result['accounting'][0]['TenDP'] + '</label></td>' +
 		
 						'</tr>';
 
 			body1 += 	'<tr>'+
+									 
+							'<td><label for="confirm">Hệ đào tạo: </label></td>' +
 
-							"<td><h5><b>Tổng số tiền SV đã đóng: </b></h5></td>" +
+							'<td><h5>' + result['accounting'][0]['HeDT'] + '</h5></td>' +
+		
+						'</tr>';
 
-							'<td><h5>' + formatCurrency(result['accounting'][0]['PhaiThu']) + ' VND</h5></td>' +
+			body1 += 	'<tr>'+
 
 							"<td><h5><b>Đợt quyết toán: </b></h5></td>" +
 
@@ -171,10 +187,6 @@ function seePQT(IdAccounting) {
 						'</tr>';
 
 			body1 += 	'<tr>'+
-
-							"<td><h5><b>Tổng số tiền quyết toán: </b></h5></td>" +
-
-							'<td><h5>' + formatCurrency(result['accounting'][0]['QuyetToan']) + ' VND</h5></td>' +
 
 							"<td><h5><b>Ngày quyết toán: </b></h5></td>" +
 
@@ -197,13 +209,11 @@ function seePQT(IdAccounting) {
 				header += "<th>STT</th>";
 				header += "<th>Mã Lớp</th>";
 				header += "<th>Tên Lớp</th>";
-				header += "<th>Mã nhóm</th>";
-				header += "<th>Tổng tiền</th>";
-				header += "<th>Phân trăm</th>";
-				header += "<th>Quyết toán</th>";
+				//header += "<th>Mã nhóm</th>";
+				header += "<th>Tổng thu</th>";
+				header += "<th>Phần trăm</th>";
+				header += "<th>Tổng chi</th>";
 				header += "<th>Xem DSSV</th>";
-				header += "<th>Xuất Excel</th>";
-				header += "<th>Xuất PDF</th>";
 				header += "</tr>";
 				header += "</thead>";
 
@@ -213,43 +223,39 @@ function seePQT(IdAccounting) {
 				body += "<td>"  + stt + "</td>"; 
 				body += "<td>"  + value['MaLop'] + "</td>"; 
 				body += "<td>"  + value['TenLop'] + "</td>"; 
-				body += "<td>"  + value['NhomTo'] + "</td>"; 
+				//body += "<td>"  + value['NhomTo'] + "</td>"; 
 				body += "<td>"  + formatCurrency(value['TongTien']) + "</td>"; 
 				body += "<td>"  + value['PhanTram'] + "%</td>"; 
 				body += "<td>"  + formatCurrency(value['QuyetToan']) + "</td>"; 
 
 				//Xem chi DSSV
 				body += '<td>' +
-						'<a href="javascript:seeListSV(' + "'" + value['NhomTo'].trim() + "', '" + value['MaLop'].trim() + "', '" + value['TenLop'].trim() +  "'" + ');">' + 
+						'<a href="javascript:seeListSV(' + "'" + value['NhomTo'].trim() + "', '" + value['MaLop'].trim() + "', '" + result['accounting'][0]['dateRange'].trim() + "', '" + value['TenLop'].trim() +  "'" + ');">' + 
 							'<button type="button" class="btn btn-block btn-info">'+
 								'Xem <i class="fa fa-info-circle"></i>'+
 							'</button>'+
 						'</a></td>';
 
-				//Xem chi DSSV
-				body += '<td>' +
-				'<a href="javascript:Excel(' + "'" + value['NhomTo'].trim() + "', '" + value['MaLop'].trim() + "', '" + value['TenLop'].trim() +  "'" + ');">' + 
-					'<button type="button" class="btn btn-block btn-success">'+
-						'Excel <i class="fa fa-file-excel-o"></i>'+
-					'</button>'+
-				'</a></td>';
-
-				//Xem chi DSSV
-				body += '<td>' +
-				'<a href="javascript:ExportPDF(' + "'" + value['NhomTo'].trim() + "', '" + value['MaLop'].trim() + "', '" + value['TenLop'].trim() +  "'" + ');">' + 
-					'<button type="button" class="btn btn-block btn-danger">'+
-						'PDF <i class="fa fa-file-pdf-o"></i>'+
-					'</button>'+
-				'</a></td>';
-
 				stt += 1;
 			}
 
 			body += "</tbody>";
-		
-			$("#showListClass").html(div + table + header + body  + "</table></div>"); 
 
-			formatTableExport('tbShowListClass',5);
+			footer = 	'<tfoot><tr>'+
+
+							"<td></td><td></td>" +
+
+							"<td><h5><b>TỔNG CỘNG: </b></h5></td>"  +
+
+							'<td><h5>' + formatCurrency(result['accounting'][0]['PhaiThu']) + '</h5></td>' + "<td></td>" +
+
+							'<td><h5>' + formatCurrency(result['accounting'][0]['QuyetToan']) + '</h5></td>' + "<td></td>" +
+
+						'</tr></tfoot>';
+		
+			$("#showListClass").html(div + table + header + body + footer + "</table></div>"); 
+
+			formatTableExPDF_DSL('tbShowListClass',5, result['accounting'][0]['dateRange'], result['accounting'][0]['TenDP'], result['accounting'][0]['HeDT']);
 
 		},
 		complete: function() {
@@ -298,6 +304,47 @@ function deleteAccounting(IdAccounting) {
 			url: "./lib/ajax/accounting/deleteAccounting.php",
 			data: {
 				IdAccounting: IdAccounting
+			},
+			dataType: "JSON",
+			beforeSend: function() {
+				$('#loading').modal({backdrop: false}); 
+			},
+			success: function(result) {
+				$('#loading').modal('hide');
+				alert(result['confirm']);
+				location.reload();
+			}
+		});
+	});
+	
+}
+
+/* 
+	Thêm ghi chú *
+*/
+function addNote(IdAccounting, PhanTramKhac, GhiChu) {
+
+	content =	'<form>' + 
+				'<div class="form-group">' +
+					'<label for="formGroupExampleInput">Nhập phần trăm khác</label>' + 
+					'<input type="number" id="percentACC" class="form-control" id="formGroupExampleInput" min="0" max="100" value="' + PhanTramKhac + '">' +
+				'</div>' +
+				'<div class="form-group">' +
+					'<label for="formGroupExampleInput2">Thêm ghi chú</label>' +
+					//'<input type="textarea" id="noteACC" class="form-control" id="formGroupExampleInput" value="' + GhiChu + '">' +
+					'<textarea id="noteACC" class="form-control" id="exampleFormControlTextarea1" rows="3">' + GhiChu + '</textarea>'
+				'</div>'
+				'</form>'
+	
+	showDialogForAccounting(content);
+	
+	$("#yesdoIt").click(() => {
+		$.ajax({
+			url: "./lib/ajax/accounting/addNote.php",
+			data: {
+				IdAccounting: IdAccounting,
+				PhanTramKhac: $("#percentACC").val(),
+				GhiChu: $("#noteACC").val()
 			},
 			dataType: "JSON",
 			beforeSend: function() {
@@ -367,30 +414,6 @@ function OUconfirm(IdAccounting) {
 	
 }
 
-/* 
-	Xuất PDF Quyết toán
-*/
-function ExportPDF(NhomTo,MaLop,TenLop) {
-	
-	showDialogForAccounting("Bạn muốn xuất PDF?");
-	
-	$("#yesdoIt").click(() => {
-		$.ajax({
-			url: "./lib/ajax/Export/ExPDF.php",
-			data: {
-				NhomTo: NhomTo,
-				MaLop: MaLop,
-				TenLop: TenLop
-			},
-			dataType: "JSON",
-			success: function(result) {
-				alert('Con cu');
-			}
-		});
-	});
-	
-}
-
 (function() {
 
 	/*
@@ -408,11 +431,15 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 				
 				let optionRound = "";
 
+				let optionTier = "";
+
 				if (result['resultRY'] == null) {
 
 					optionYear = "<option value='null' selected>Chọn năm quyết toán</option>";
 				
 					optionRound = "<option value='null' selected>Chọn đợt quyết</option>";
+
+					optionTier = "<option value='null' selected>Chọn hệ đào tạo</option>";
 					
 				} else {
 					
@@ -421,6 +448,8 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 						optionYear = "<option value='" + value[0] + "'selected>" + value[1] + "</option>";		
 							
 						optionRound = "<option value='" + value[2] + "'selected>" + value[3] + "</option>";
+
+						optionTier = "<option value='" + value[5] + "'selected>" + value[6] + "</option>";
 	
 					});	
 
@@ -432,17 +461,24 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 
 						optionYear += "<option value='" + value[0] + "'>" + value[1] + "</option>";		
 						
-					} else {
+					} else if (value[2] == 'round') {
 						
 						optionRound += "<option value='" + value[0] + "'>" + value[1] + "</option>";
 
+					} else {
+
+						optionTier += "<option value='" + value[0] + "'>" + value[1] + "</option>";
+
 					}	
+
 
 				});
 				
 				$("#selectYear").html(optionYear);
 
 				$("#selectRound").html(optionRound);
+
+				$("#selectTier").html(optionTier);
 			}
 		});
 		
@@ -457,7 +493,8 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 			url: "./lib/ajax/accounting/createDataAccounting.php",
 			data: {
 				Year: $("#selectYear").val(),
-				Round: $("#selectRound").val()
+				Round: $("#selectRound").val(),
+				Tier: $("#selectTier").val()
 			},
 			dataType: "JSON",
 			beforeSend: function() {
@@ -588,12 +625,12 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 				header += "<th>STT</th>";
 				header += "<th>ID</th>";
 				header += "<th>ĐVLK</th>";
+				header += "<th>Hệ Đào tạo</th>";
 				header += "<th>Ngày tạo</th>";
 				header += "<th>Năm</th>";
 				header += "<th>Đợt</th>";
 				header += "<th>Tổng thu</th>";
 				header += "<th>Tổng Chi</th>";
-				header += "<th>Khác</th>";
 				header += "<th>ĐVLK xác nhận</th>";
 				header += "<th>OU xác nhận</th>";
 				header += "<th>Xem chi tiết</th>";
@@ -608,12 +645,12 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 				body += "<td>"  + stt + "</td>"; //stt
 				body += "<td>"  + value['ID_accounting'] + "</td>"; //ID
 				body += "<td>"  + value['TenDP'] + "</td>"; //TenDP
+				body += "<td>"  + value['HeDT'] + "</td>"; //HeDT
 				body += "<td>"  + value['createDay'] + "</td>"; //Ngày tạo
 				body += "<td>"  + value['Year'] + "</td>"; //Năm quyết toán
 				body += "<td>"  + value['Round'] + "</td>"; //Đợt quyết toán
 				body += "<td>"  + formatCurrency(value['PhaiThu']) + ' VND' + "</td>"; //total
 				body += "<td>"  + formatCurrency(value['QuyetToan']) + ' VND' + "</td>"; //total_discount
-				body += "<td>"  + value['Khac'] + "</td>"; //note
 				
 				//DVLK xác nhận (0: chưa - 1: Rồi) 
 				if (value['DPXacNhan'] == '0') {
@@ -622,7 +659,7 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 					body += '<td><i class="fa fa-check"></i></td>';
 				}
 				
-				//Kế toán xác nhận
+				//Kế toán xác nhận (0: chưa - 1: Rồi) 
 				if ((value['DPXacNhan'] == '1') && (value['OUXacNhan'] == '0')) {
 					body += '<td>' +
 								'<a href="javascript:OUconfirm(' + "'" + value['ID_accounting'].trim() + "'" + ');">' + 
@@ -632,7 +669,7 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 							'</a></td>'; 
 				} else if (value['DPXacNhan'] == '0') {
 					body += "<td>Chờ ĐVLK xác nhận</td>"; 
-				} else {
+				} else  if (value['OUXacNhan'] == '1'){
 					body += '<td><i class="fa fa-check"></i></td>';
 				}
 
@@ -644,7 +681,7 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 							'</button>'+
 						'</a></td>';
 
-				//Trạng thái (0: Gửi mail)
+				//Trạng thái (0: Gửi mail, 1: Đã gửi, 2: Đã quyết toán)
 				if (value['TrangThai'] == '0') {
 					body += '<td>' +
 								'<a href="javascript:sentMailPQT(' + "'" + value['ID_accounting'].trim() + "'" + ');">' + 
@@ -652,9 +689,9 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 									'Gửi mail <i class="fa fa-info-circle"></i>'+
 								'</button>'+
 							'</a></td>';
-				} else if (value['NgayQT'] == null) {
+				} else if (value['TrangThai'] == '1') {
 					body += "<td>Đã gửi mail</td>"; 
-				} else {
+				} else if (value['TrangThai'] == '2'){
 					body += "<td>Đã QT (" + value['NgayQT'] + ")</td>";
 				}
 
@@ -675,6 +712,7 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 							'</td>';
 				}
 
+
 				stt += 1;
 
 			}
@@ -683,7 +721,7 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 			
 			$("#showListPQTbyOU").html(table + header + body  + "</table></div>"); 
 
-			formatTable('tbListPQTbyOU',5);
+			formatTableExport('tbListPQTbyOU',5);
 
 		},
 		complete: function() {
@@ -711,6 +749,7 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 				header += "<th>STT</th>";
 				header += "<th>ID</th>";
 				header += "<th>ĐVLK</th>";
+				header += "<th>Hệ</th>";
 				header += "<th>Ngày tạo</th>";
 				header += "<th>Năm quyết toán</th>";
 				header += "<th>Đợt quyết toán</th>";
@@ -729,6 +768,7 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 					body += "<td>"  + stt + "</td>"; //stt
 					body += "<td>"  + value['ID_accounting'] + "</td>"; //TenDP
 					body += "<td>"  + value['TenDP'] + "</td>"; //TenDP
+					body += "<td>"  + value['HeDT'] + "</td>"; //TenDP
 					body += "<td>"  + value['createDay'] + "</td>"; //Ngày tạo
 					body += "<td>"  + value['Year'] + "</td>"; //Năm quyết toán
 					body += "<td>"  + value['Round'] + "</td>"; //Đợt quyết toán
@@ -758,7 +798,7 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 				//Trạng thái
 				if (value['DPXacNhan'] == 0) {
 					body += '<td>Chờ xác nhận</td>';
-				} else if (value['NgayQT'] == null) {
+				} else if ((value['DPXacNhan'] == '1') && (value['OUXacNhan'] == '0')) {
 					body += "<td>Chờ quyết toán</td>";
 				} else {
 					body += "<td>Đã quyết toán (" + value['NgayQT'] + ")</td>";
@@ -771,6 +811,79 @@ function ExportPDF(NhomTo,MaLop,TenLop) {
 			$("#showListPQTbyDVLK").html(table + header + body  + "</table></div>");
 
 			formatTable('tbListPQTbyDP',5);
+
+		},
+		complete: function() {
+			$('#loading').modal('hide'); 
+		}
+	});
+
+	/*
+		Hiển thị thống kê các đợt quyết toán
+	*/
+	$.ajax({
+		url: "./lib/ajax/accounting/getDataForStatistical.php",
+		dataType: "JSON",
+		beforeSend: function() {
+			$('#loading').modal({backdrop: false}); 
+		},
+		success: function(result) {
+					
+			let table = "<table id='tbStatis' class='table table-bordered table-striped dataTable'>";
+
+			stt = 1;
+
+			let header = "<thead>";
+				header += "<tr>";
+				header += "<th>STT</th>";
+				header += "<th>ID</th>";
+				header += "<th>ĐVLK</th>";
+				header += "<th>Hệ Đào tạo</th>";
+				header += "<th>Năm</th>";
+				header += "<th>Đợt</th>";
+				header += "<th>Tổng thu</th>";
+				header += "<th>Tổng Chi</th>";
+				header += "<th>% Khác</th>";
+				header += "<th>Thực Chi</th>";
+				header += "<th>Ngày QT</th>";
+				header += "<th>Ghi chú</th>";
+				header += "<th>Thêm ghi chú</th>";
+				header += "</tr>";
+				header += "</thead>";
+
+			let body = "<tbody>";
+			for(value of result['data']) {
+				body += "<tr>";
+				body += "<td>"  + stt + "</td>"; //stt
+				body += "<td>"  + value['ID_accounting'] + "</td>"; //ID
+				body += "<td>"  + value['TenDP'] + "</td>"; //TenDP
+				body += "<td>"  + value['HeDT'] + "</td>"; //HeDT
+				body += "<td>"  + value['Year'] + "</td>"; //Năm quyết toán
+				body += "<td>"  + value['Round'] + "</td>"; //Đợt quyết toán
+				body += "<td>"  + formatCurrency(value['PhaiThu']) + "</td>"; //total
+				body += "<td>"  + formatCurrency(value['QuyetToan']) + "</td>"; //total_discount
+				body += "<td>"  + value['PhanTramKhac'] + " %</td>"; //percent_another
+				body += "<td>"  + formatCurrency(value['ThucChi']) + "</td>"; //percent_another
+				body += "<td>"  + value['NgayQT'] + "</td>"; //ngay QT
+				body += "<td>"  + value['GhiChu'] + "</td>"; //note	
+
+				//Thêm ghi chú
+				body += '<td>' +
+							'<a href="javascript:addNote(' + "'" + value['ID_accounting'].trim() + "', '" + value['PhanTramKhac'].trim() + "', '" + value['GhiChu'].trim() +  "'" + ');">' + 
+							'<button type="button" class="btn btn-grey">'+
+								'<i class="fa fa-pencil"></i>'+
+							'</button>'+
+						'</a></td>';
+
+				stt += 1;
+
+			}
+
+			body += "</tbody>";
+			
+			$("#showStatis").html(table + header + body  + "</table></div>"); 
+
+			formatTableExport('tbStatis',5);
 
 		},
 		complete: function() {

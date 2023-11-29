@@ -23,7 +23,7 @@
 
 	$sql = "update accounting 
 	
-			set luong_confirm = '1', accounting_day = '" . date("Y-m-d") . "'
+			set luong_confirm = '1', status = '2' ,accounting_day = '" . date("Y-m-d") . "'
 			
 			where ID_accounting = '" . $idAccounting . "'";
 	

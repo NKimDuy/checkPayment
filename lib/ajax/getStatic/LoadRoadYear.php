@@ -23,7 +23,7 @@
 		// Lấy thông tin Đợt quyết toán để user chọn
 
 		$sql_RY = "select * from choice 
-					where type = 'year' or type = 'round'";
+					where type = 'year' or type = 'round' or type = 'tier'";
 		
 		$queryRY = mysqli_query($con, $sql_RY);
 		
@@ -45,29 +45,7 @@
 			}
 		}
 
-		//Lưu thông tin Đợt quyết toán đã chọn
 
-		//$arrResultRY = [];
-
-		// if ($_SESSION['dateRange'] != null) {
-
-		// 	$temp = [];
-
-		// 	array_push($temp, $_SESSION['nk']);
-
-		// 	array_push($temp, $_SESSION['descriptNK']);
-
-		// 	array_push($temp, $_SESSION['hk']);
-
-		// 	array_push($temp, $_SESSION['descriptHK']);
-
-		// 	array_push($arrResultRY, $temp);
-
-		// } else {
-
-		// 	$arrResultRY = null;
-
-		// }
 	
 		echo json_encode(
 

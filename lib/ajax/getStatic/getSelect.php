@@ -52,9 +52,18 @@
 
 	$_SESSION['MaDP'] = $_GET['madp'];
 
-	$queryDVLK = thongTinDiaPhuong($curl, $madp = $_SESSION['MaDP']);
+	if ($_SESSION['MaDP'] == 'All') {
 
-	$_SESSION['descriptMaDP'] = $queryDVLK['data'][0]['TenDP'];
+		$_SESSION['descriptMaDP'] = "Tất cả đơn vị liên kết";
+		
+	} else {
+		$queryDVLK = thongTinDiaPhuong($curl, $madp = $_SESSION['MaDP']);
+
+		$_SESSION['descriptMaDP'] = $queryDVLK['data'][0]['TenDP'];
+	}
+	
+
+
 
 	// lấy thông tin ĐỢT QUYẾT TOÁN lưu vào session
 
