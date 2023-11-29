@@ -16,6 +16,8 @@
 		$_SESSION['round'] = $_GET['Round'];
 
 		$_SESSION['year'] = $_GET['Year'];
+
+		$_SESSION['tier'] = $_GET['Tier'];
 		
 		if ($_SESSION['round'] == "r1") {
 
@@ -41,19 +43,13 @@
 
 		$con = connectSql();
 
-		$_SESSION['BillPaid_DVLK'] = [];
-
-		$query = thongTinDongHocPhiDiaPhuong($curl, $madvpc = 'TX', $fromdate = $_SESSION['fromDate'], $todate = $_SESSION['toDate'], $madp = $_SESSION['MaDP']);
-
-		$_SESSION['BillPaid_DVLK'] = json_decode(bzdecompress(base64_decode($query['data'])), true);
-
-	// Lất dữ liệu phần trăm từ  sql
+	// Lất dữ liệu phần trăm từ sql
 
 		$sql = "select * 
 		
 				from link_unit_accounting
 					
-				where unit = '" . $_SESSION['MaDP'] . "'";
+				where unit = '" . $_SESSION['MaDP'] . "' and id_tier = '" . $_SESSION['tier'] . "'";
 		
 		$query_Percent = mysqli_query($con, $sql);
 
@@ -70,11 +66,22 @@
 							"NhomTo" => $r['id_group'],
 							"TenLop" => $r['class_name'],
 							"PhanTram" => $r['percent_accounting'],
+							"HeDT" => $r['tier'],
 							"TongTien" => 0
 						];
 				
 				array_push($_SESSION['percent'], $temp);
 			}
+		}
+
+		if ($_SESSION['percent'] != []) {
+
+			$_SESSION['BillPaid_DVLK'] = [];
+
+			$query = thongTinDongHocPhiDiaPhuong($curl, $madvpc = 'TX', $fromdate = $_SESSION['fromDate'], $todate = $_SESSION['toDate'], $madp = $_SESSION['MaDP']);
+	
+			$_SESSION['BillPaid_DVLK'] = json_decode(bzdecompress(base64_decode($query['data'])), true);
+
 		}
 
 	// Lất dữ liệu để so đã quyết toán hay chưa

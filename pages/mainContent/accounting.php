@@ -22,7 +22,8 @@
                             <ul class="nav nav-tabs">
                                 <?php //if($_SESSION['groupUser'] != "2") { ?>
                                 <li class=""><a href="#byCreate" data-toggle="tab" aria-expanded="false"><h4>TẠO PHIẾU QUYẾT TOÁN</h4></a></li>
-                                <li class=""><a href="#byListOU" data-toggle="tab" aria-expanded="true"><h4>DANH SÁCH PHIẾU QUYẾT TOÁN</h4></a></li> <!-- OU -->
+                                <li class=""><a href="#byListOU" data-toggle="tab" aria-expanded="true"><h4>DANH SÁCH PHIẾU QUYẾT TOÁN</h4></a></li>
+                                <li class=""><a href="#byStatis" data-toggle="tab" aria-expanded="true"><h4>THỐNG KÊ QUYẾT TOÁN</h4></a></li> <!-- OU -->
 								<?php //}else { ?>
                                 <li class=""><a href="#byListDVLK" data-toggle="tab" aria-expanded="false"><h4>DANH SÁCH PHIẾU QUYẾT TOÁN</h4></a></li><!-- DP -->
 								<?php //} ?>
@@ -45,6 +46,12 @@
                                                     <select id="selectRound" class="form-control select2" aria-label="Default select example"></select>
                                                 </div>
                                             <!-- /.Pick Round -->
+
+                                            <!-- Pick Program -->
+                                                <div class="col-xs-12 col-md-3" style="margin-bottom:5px;">
+                                                    <select id="selectTier" class="form-control select2" aria-label="Default select example"></select>
+                                                </div>
+                                            <!-- /.Pick Program -->
 
 
                                             <!-- submit  -->
@@ -85,6 +92,18 @@
 
                                     </div>
                                 <!-- /.DS PQT OU -->
+
+                                <!-- THONG KE -->
+                                    <div class="tab-pane" id="byStatis">
+
+                                        <div class='box-body'>
+
+                                            <div id="showStatis" class="col-xs-12">DVLK</div>
+
+                                        </div>
+
+                                    </div>
+                                <!-- /.THONG KE -->
 
                                 <!-- DS PQT DVLK -->
                                     <div class="tab-pane" id="byListDVLK">

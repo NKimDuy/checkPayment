@@ -23,6 +23,14 @@
 		// Lấy thông tin Địa phương để user chọn
 
 		$arrSelectDP = [];
+
+		$temp1 = [];
+
+		array_push($temp1, 'All');
+
+		array_push($temp1, 'Chọn tất cả');
+
+		array_push($arrSelectDP, $temp1);
 		
 		$queryDP = thongTinDiaPhuong($curl);
 		
