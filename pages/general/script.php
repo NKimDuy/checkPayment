@@ -71,7 +71,7 @@
 
 <script src="js/__forCourseWare.js"></script> <!-- js for accounting.php -->
 <script src="js/__forExcelAndMail.js"></script> <!-- js for excel and mail -->
-<script src="js/__forRegister.js"></script> 
+<script src="js/forPage/__for-register.js"></script> 
 
 
 <script src="https://smtpjs.com/v3/smtp.js"></script>
