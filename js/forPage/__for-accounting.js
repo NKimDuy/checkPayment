@@ -224,9 +224,9 @@ function seePQT(IdAccounting) {
 				body += "<td>"  + value['MaLop'] + "</td>"; 
 				body += "<td>"  + value['TenLop'] + "</td>"; 
 				//body += "<td>"  + value['NhomTo'] + "</td>"; 
-				body += "<td>"  + formatCurrency(value['TongTien']) + "</td>"; 
-				body += "<td>"  + value['PhanTram'] + "%</td>"; 
-				body += "<td>"  + formatCurrency(value['QuyetToan']) + "</td>"; 
+				body += "<td style='text-align:right'>"  + formatCurrency(value['TongTien']) + "</td>"; 
+				body += "<td style='text-align:right'>"  + value['PhanTram'] + "%</td>"; 
+				body += "<td style='text-align:right'>"  + formatCurrency(value['QuyetToan']) + "</td>"; 
 
 				//Xem chi DSSV
 				body += '<td>' +
@@ -332,9 +332,9 @@ function addNote(IdAccounting, PhanTramKhac, GhiChu) {
 				'<div class="form-group">' +
 					'<label for="formGroupExampleInput2">Thêm ghi chú</label>' +
 					//'<input type="textarea" id="noteACC" class="form-control" id="formGroupExampleInput" value="' + GhiChu + '">' +
-					'<textarea id="noteACC" class="form-control" id="exampleFormControlTextarea1" rows="3">' + GhiChu + '</textarea>'
-				'</div>'
-				'</form>'
+					'<textarea id="noteACC" class="form-control" id="exampleFormControlTextarea1" rows="3">' + GhiChu + '</textarea>' +
+				'</div>' +
+				'</form>';
 	
 	showDialogForAccounting(content);
 	
@@ -862,18 +862,19 @@ function OUconfirm(IdAccounting) {
 				body += "<td>"  + value['Round'] + "</td>"; //Đợt quyết toán
 				body += "<td>"  + formatCurrency(value['PhaiThu']) + "</td>"; //total
 				body += "<td>"  + formatCurrency(value['QuyetToan']) + "</td>"; //total_discount
-				body += "<td>"  + value['PhanTramKhac'] + " %</td>"; //percent_another
+				body += "<td>"  + formatCurrency(value['PhanTramKhac']) + " </td>"; //percent_another
 				body += "<td>"  + formatCurrency(value['ThucChi']) + "</td>"; //percent_another
 				body += "<td>"  + value['NgayQT'] + "</td>"; //ngay QT
 				body += "<td>"  + value['GhiChu'] + "</td>"; //note	
 
-				//Thêm ghi chú
+				//Thêm ghi chú				
 				body += '<td>' +
-							'<a href="javascript:addNote(' + "'" + value['ID_accounting'].trim() + "', '" + value['PhanTramKhac'].trim() + "', '" + value['GhiChu'].trim() +  "'" + ');">' + 
+							'<a href="javascript:addNote(' + "'" + value['ID_accounting'].trim() + "', '" + value['PhanTramKhac'].trim() + "', '" + value['GhiChu'] +  "'" + ');">' + 
 							'<button type="button" class="btn btn-grey">'+
 								'<i class="fa fa-pencil"></i>'+
 							'</button>'+
 						'</a></td>';
+
 
 				stt += 1;
 
@@ -884,6 +885,62 @@ function OUconfirm(IdAccounting) {
 			$("#showStatis").html(table + header + body  + "</table></div>"); 
 
 			formatTableExport('tbStatis',5);
+
+		},
+		complete: function() {
+			$('#loading').modal('hide'); 
+		}
+	});
+
+		/*
+		Hiển thị thống kê các đợt quyết toán
+	*/
+	$.ajax({
+		url: "./lib/ajax/accounting/getDataForPercent.php",
+		dataType: "JSON",
+		beforeSend: function() {
+			$('#loading').modal({backdrop: false}); 
+		},
+		success: function(result) {
+					
+			let table = "<table id='tbPercent' class='table table-bordered table-striped dataTable'>";
+
+			stt = 1;
+
+			let header = "<thead>";
+				header += "<tr>";
+				header += "<th>STT</th>";
+				header += "<th>Mã ĐP</th>";
+				header += "<th>Hệ</th>";
+				header += "<th>Mã Lớp</th>";
+				header += "<th>Tên Lớp</th>";
+				//header += "<th>Mã Nhóm</th>";
+				header += "<th>Phần trăm</th>";
+				header += "<th>Số HĐ</th>";
+				header += "</tr>";
+				header += "</thead>";
+
+			let body = "<tbody>";
+			for(value of result['data']) {
+				body += "<tr>";
+				body += "<td>"  + stt + "</td>"; 
+				body += "<td>"  + value['MaDP'] + "</td>"; 
+				body += "<td>"  + value['HeDT'] + "</td>"; 
+				body += "<td>"  + value['MaLop'] + "</td>"; 
+				body += "<td>"  + value['TenLop'] + "</td>"; 
+				//body += "<td>"  + value['NhomTo'] + "</td>"; 
+				body += "<td>"  + value['PhanTram'] + "</td>"; 
+				body += "<td>"  + value['SoHD'] + "/HĐ-ĐHM ngày " + value['NamHD'] + "</td>"; 
+
+				stt += 1;
+
+			}
+
+			body += "</tbody>";
+			
+			$("#showListPercent").html(table + header + body  + "</table></div>"); 
+
+			formatTableExport('tbPercent',10);
 
 		},
 		complete: function() {

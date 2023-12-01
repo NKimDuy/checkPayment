@@ -49,7 +49,7 @@
 		
 				from link_unit_accounting
 					
-				where unit = '" . $_SESSION['MaDP'] . "' and id_tier = '" . $_SESSION['tier'] . "'";
+				where unit = '" . $_SESSION['MaDP'] . "' and tier = '" . $_SESSION['tier'] . "'";
 		
 		$query_Percent = mysqli_query($con, $sql);
 

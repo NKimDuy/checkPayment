@@ -20,11 +20,19 @@
 
 	$query = mysqli_query($con, $sql);
 
+	// if($query)
+	// {
+	// 	while($r = mysqli_fetch_assoc($query))
+	// 	{
+	// 		$ThucChi = ((int)$r['total']*((int)$PhanTramKhac/100)) + (int)$r['total_discount'];
+	// 	}
+	// }
+
 	if($query)
 	{
 		while($r = mysqli_fetch_assoc($query))
 		{
-			$ThucChi = ((int)$r['total']*((int)$PhanTramKhac/100)) + (int)$r['total_discount'];
+			$ThucChi = (int)$PhanTramKhac + (int)$r['total_discount'];
 		}
 	}
 

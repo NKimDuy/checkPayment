@@ -49,11 +49,11 @@
 
 				$tier = "Đào tạo từ xa (Truyền thống)";
 	
-			} elseif ($r['round'] == "vl") {
+			} elseif ($r['tier'] == "vl") {
 	
 				$tier = "Vừa làm vừa học";
 	
-			} elseif ($r['round'] == "tt") {
+			} elseif ($r['tier'] == "tt") {
 				
 				$tier = "Đào tạo từ xa (Trực tuyến)";
 	

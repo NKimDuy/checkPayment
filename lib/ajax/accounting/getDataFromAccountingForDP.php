@@ -17,7 +17,7 @@
 	
 			from accounting 
 			
-			where ma_dvlk = '" . $_SESSION['MaDP'] . "' and status = 1 or status = 2";
+			where ma_dvlk = '" . $_SESSION['MaDP'] . "' and (status = 1 or status = 2)";
 	
 	$query = mysqli_query($con, $sql);
 
@@ -47,11 +47,11 @@
 
 				$tier = "Đào tạo từ xa (Truyền thống)";
 	
-			} elseif ($r['round'] == "vl") {
+			} elseif ($r['tier'] == "vl") {
 	
 				$tier = "Vừa làm vừa học";
 	
-			} elseif ($r['round'] == "tt") {
+			} elseif ($r['tier'] == "tt") {
 				
 				$tier = "Đào tạo từ xa (Trực tuyến)";
 	

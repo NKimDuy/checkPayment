@@ -198,7 +198,7 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
               },
 
               {
-                text: ['Nguyễn Thành Lộc'],
+                text: ['Võ Thị Mỹ Vân'],
                 alignment: 'center'
               },
 
@@ -239,6 +239,9 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
         },
         title: function() {return ""},
         customize: function (doc) {
+
+          //doc.defaultStyle.alignment = 'right';
+          //doc.styles.tableHeader.alignment = 'right';
 
           // Thêm nội dụng vào đầu tài liệu
           doc.content.splice(0, 0, {
@@ -303,7 +306,7 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
           doc.content.push({
             columns: [
               {
-                text: ['ĐẠI DIỆN \n TRƯỜNG ĐẠI HỌC MỞ TP.HCM'],
+                text: ['ĐẠI DIỆN \n Trường Đại học Mở TP.HCM'],
                 alignment: 'center'
               },
 
