@@ -212,7 +212,7 @@ function seePQT(IdAccounting) {
 				//header += "<th>Mã nhóm</th>";
 				header += "<th>Tổng thu</th>";
 				header += "<th>Phần trăm</th>";
-				header += "<th>Tổng chi</th>";
+				header += "<th>Tổng chi cho ĐVLK </th>";
 				header += "<th>Xem DSSV</th>";
 				header += "</tr>";
 				header += "</thead>";
@@ -245,7 +245,7 @@ function seePQT(IdAccounting) {
 
 							"<td></td><td></td>" +
 
-							"<td><h5><b>TỔNG CỘNG: </b></h5></td>"  +
+							"<td><b>TỔNG CỘNG: </b></td>"  +
 
 							'<td><h5>' + formatCurrency(result['accounting'][0]['PhaiThu']) + '</h5></td>' + "<td></td>" +
 
