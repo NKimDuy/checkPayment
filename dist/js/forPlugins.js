@@ -239,13 +239,12 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
         },
         title: function() {return ""},
         customize: function (doc) {
+          console.log(doc.content); 
           doc.styles.tableHeader = {
           }
-          doc.content[1].table.body.forEach(function(row){
-            row.forEach(function(cell) {
-              cell.border = [true, true, true, true];
-            })
-          })
+          doc.styles.tableFooter = {
+          }
+          
           //doc.defaultStyle.alignment = 'right';
           //doc.styles.tableHeader.alignment = 'right';
 

@@ -30,11 +30,12 @@
 	$query = mysqli_query($con, $sql);
 
 	//Lấy các user có quyền kế toán ở DVLK
-	$sql_userDP = "select mail FROM user_link_unit 
 					
-					where unit = '" . $_SESSION['MaDP'] . "'
-					
-					and EXISTS (SELECT mail FROM user_permission WHERE permission = 'account')";
+	$sql_userDP = "SELECT user.mail 
+					FROM user_permission 
+					join user on user_permission.mail = user.mail
+					join user_link_unit on user_link_unit.mail = user.mail 
+					WHERE permission = 'account' and group_user = '2' and unit = '" . $_SESSION['MaDP'] . "';";
 
 	$query_userDP = mysqli_query($con, $sql_userDP);
 
