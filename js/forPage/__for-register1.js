@@ -240,7 +240,6 @@ function createUser(superUser) {
 		divCreateUser += '<div class="col-xs-1">' +
 							'<div class="form-group">' +
 								'<input type="hidden" id="selectPermission" name="selectPermission" /> <!-- 7 -->' +
-								'<input type="hidden" id="selectLinkUnit" name="selectLinkUnit" /> <!-- 8 -->' +
 								'<input type="submit" onclick="createNewOrUpdateUser(event)" class="btn btn-block btn-primary btn" value="Đăng kí" id="registerFormUser">' +                                                
 							'</div></div></form>';
 					
@@ -269,10 +268,6 @@ function detailUser(mail) {
 			$.each(result['permission'], (index, value) => {
 				$("#" + value[0]).prop("checked","checked");
 			});
-			$.each(result['linkUnit'], (index, value) => {
-				$("#" + value[0]).prop("checked","checked");
-			});
-			
 
 			//$("#showtbActionEdit").css("display", "none");
 			//$("#showtbDvlkEdit").css("display", "none");
@@ -352,7 +347,6 @@ function detailUser(mail) {
 		divCreateUser += '<div class="col-xs-1">' +
 							'<div class="form-group">' +
 								'<input type="hidden" id="selectPermission" name="selectPermission"> <!-- 7 -->' +
-								'<input type="hidden" id="selectLinkUnit" name="selectLinkUnit"> <!-- 8 -->' +
 								'<input type="submit" onclick="createNewOrUpdateUser(event)" class="btn btn-block btn-primary btn" value="Cập nhật" id="registerFormUser">' +                                                
 							'</div></div></form>';
 							
@@ -373,28 +367,21 @@ function createNewOrUpdateUser(e) {
 	
 	e.preventDefault();
 	
-	let tempPermission = "";
-	
-	let tempLinkUnit = "";
+	let temp = "";
 			
 	$("#tbPermission input:checked").each(function(index, item) {
-		tempPermission += $(item).val() + ", ";
+		temp += $(item).val() + ", ";
 	});
 	
 	$("#tbDvlk input:checked").each(function(index, item) {
-		tempLinkUnit += $(item).val() + ", ";
+		temp += $(item).val() + ", ";
 	});
 	
-	
-	$("#selectPermission").val(tempPermission);
-	
-	$("#selectLinkUnit").val(tempLinkUnit);
+	$("#selectPermission").val(temp);
 	
 	let fullname = ( validateEmptyInput("errorFullname", $("#fullname").val()) && validateSqlInjection("errorFullname", $("#fullname").val()) ) ? true : false;
 	
-	//let phone = ( validateEmptyInput("errorPhone", $("#phone").val()) && validatePhone("errorPhone", $("#phone").val()) ) ? true : false;
-	
-	let phone = ( validateEmptyInput("errorPhone", $("#phone").val()) ) ? true : false;
+	let phone = ( validateEmptyInput("errorPhone", $("#phone").val()) && validatePhone("errorPhone", $("#phone").val()) ) ? true : false;
 	
 	//let username = ( validateEmptyInput("errorUsername", $("#username").val()) && validateSqlInjection("errorUsername", $("#username").val()) ) ? true : false;
 	
@@ -409,7 +396,6 @@ function createNewOrUpdateUser(e) {
 	let groupUser = validateSelectGroupUser("errorGroupUser", $("#groupUser").val());
 	
 	if($("#status").val() == "edit") {
-		
 		if(fullname && phone && mail) {
 			
 			showDialogForRegister("Cập nhật User?");
@@ -430,8 +416,6 @@ function createNewOrUpdateUser(e) {
 							
 							location.reload();
 						}
-						else
-							alert("Có lỗi xảy ra");
 					}
 				});
 			});
@@ -491,17 +475,6 @@ function deleteUser(mail) {
 				}
 			}
 		});
-	});
-}
-
-function updateDVLK() {
-	$.ajax({
-		url: "./lib/ajax/createOrAlterUser/updateDvlk.php",
-		dataType: "JSON",
-		success: function(result) {
-			alert(result['confirm']);
-			location.reload();
-		}
 	});
 }
 
@@ -616,13 +589,13 @@ function editDvlk (dvlk) {
 		},
 		dataType: "JSON",
 		success: function(result) {
-			/*
+			
 			$("#tbAction input:checkbox").prop("checked",false);
 			
 			$.each(result['action'], (index, value) => {
 				$("#" + value[0]).prop("checked","checked");
 			});
-			*/
+
 			$("#showForm").css("display", "block").html("");
 
 			let divEditDVLK =  	'<div class="box-header with-border">' +
@@ -737,10 +710,10 @@ function createAction() {
 	
 	$("#tbPermission input:checkbox").prop("checked",false);
 	
-	//$("#tbDvlk input:checkbox").prop("checked",false);
+	$("#tbDvlk input:checkbox").prop("checked",false);
 	
 	$("#showtbPermission").css("display", "block");
-	//$("#showtbDvlk").css("display", "block");
+	$("#showtbDvlk").css("display", "block");
 	
 	$("#showForm").css("display", "block").html("");
 	
@@ -765,13 +738,13 @@ function createAction() {
 							'<div class="form-group">' +
 								'<div class="input-group">' +
 									'<div class="input-group-addon"><i class="fa fa-user"></i></div>' +
-									'<input type="text" class="form-control" id="nameAction" name="nameAction" placeholder="Nhập action name"> <!-- 1 -->' +
+									'<input type="text" class="form-control" id="nameAction" name="nameAction" placeholder="Nhập action name"> <!-- 0 -->' +
 									'<span id="errorActionName" style="color:red;"></span>' +
 							'</div></div></div>';
 						
 		divCreateAction += '<div class="col-xs-1">' +
 							'<div class="form-group">' +
-								'<input type="hidden" id="selectAction" name="selectedActionForDvlk"> <!-- 2 -->' +
+								'<input type="hidden" id="selectAction" name="selectedActionForDvlk"> <!-- 3 -->' +
 								'<input type="submit" onclick="createNewAction(event)" class="btn btn-block btn-primary btn" value="Đăng kí" id="registerAction">' +                                                
 							'</div></div></form>';
 					
@@ -793,11 +766,10 @@ function createNewAction(e) {
 	$("#tbPermission input:checked").each(function(index, item) {
 		temp += $(item).val() + ", ";
 	});
-	/*
+
 	$("#tbDvlk input:checked").each(function(index, item) {
 		temp += $(item).val() + ", ";
 	});
-	*/
 
 	$("#selectAction").val(temp);
 	
@@ -877,9 +849,9 @@ function createPermission() {
 	
 	$("#tbAction input:checkbox").prop("checked",false);
 	
-	//$("#tbDvlk input:checkbox").prop("checked",false);
+	$("#tbDvlk input:checkbox").prop("checked",false);
 	
-	//$("#showtbDvlk").css("display", "block");
+	$("#showtbDvlk").css("display", "block");
 	
 	$("#showtbAction").css("display", "block");
 	
@@ -918,6 +890,8 @@ function createPermission() {
 					
 	$("#showForm").html(divCreatePermission);
 	
+	//$("#showtbActionEdit").css("display", "block");
+	//$("#showtbDvlkEdit").css("display", "block");
 	
 }
 
@@ -935,11 +909,11 @@ function createNewPermission(e) {
 	$("#tbAction input:checked").each(function(index, item) {
 		temp += $(item).val() + ", ";
 	});
-	/*
+	
 	$("#tbDvlk input:checked").each(function(index, item) {
 		temp += $(item).val() + ", ";
 	});
-	*/
+	
 	$("#selectedActionForPermission").val(temp);
 	
 	let idPermission = ( validateEmptyInput("errorPermissionId", $("#idPermission").val()) && validateSqlInjection("errorPermissionId", $("#idPermission").val()) ) ? true : false;
@@ -987,17 +961,17 @@ function editPermission(permission) {
 		success: function(result) {
 			
 			$("#tbAction input:checkbox").prop("checked",false);
-			/*
+	
 			$("#tbDvlk input:checkbox").prop("checked",false);
-			*/
+			
 			$.each(result['action'], (index, value) => {
 				$("#" + value[0]).prop("checked","checked");
 			});
-			/*
+			
 			$.each(result['dvlk'], (index, value) => {
 				$("#" + value[0]).prop("checked","checked");
 			});
-			*/
+
 			let divEditPermission =  	'<div class="box-header with-border">' +
 									 	'<label class="box-title">Chỉnh sửa Permission: </label>' +
 										"<div class='box-tools pull-right'>" +
@@ -1029,7 +1003,7 @@ function editPermission(permission) {
 							
 			$("#showForm").css("display", "block").html(divEditPermission);
 			$("#showtbAction").css("display", "block");
-			//$("#showtbDvlk").css("display", "block");
+			$("#showtbDvlk").css("display", "block");
 			//$("#showtbPermissionEdit").css("display", "none");
 			
 		}
@@ -1103,11 +1077,11 @@ function changeActionForPermission() {
 		$("#tbAction input:checked").each(function(index, item) {
 			temp += $(item).val() + ", ";
 		});
-		/*
+		
 		$("#tbDvlk input:checked").each(function(index, item) {
 			temp += $(item).val() + ", ";
 		});
-		*/
+		
 		$("#editPermission").val(temp);
 		
 		$.ajax({
@@ -1241,7 +1215,7 @@ function changeActionForDvlk() {
 	/*
 		reset password ở phía admin
 	*/
-	
+	/*
 	$("#formResetPasswordByAdmin").submit((e) => {
 		
 		e.preventDefault();
@@ -1286,7 +1260,7 @@ function changeActionForDvlk() {
 		}
 		
 	});
-	
+	*/
 	
 	/*
 		load các table 
@@ -1418,11 +1392,11 @@ function changeActionForDvlk() {
 					tbDvlk += "<td></td>";
 					tbDvlk += "</tr>";
 				//////////////////////////////////////////////
-					//createDVLK
+				
 					let tbDvlkEdit = 	'<div class="box-header with-border">' +
 									'<label class="box-title">Bảng danh sách Đơn vị liên kết</label>' +
 									'<div class="box-tools pull-right">' +
-										'<button onclick="updateDVLK()" id="confirm" class="btn btn-block btn-info">Cập nhật đơn vị liên kết</button>' +
+										'<button onclick="createDVLK()" id="confirm" class="btn btn-block btn-info">Thêm ĐVLK</button>' +
 								"</div></div>" + 	
 								'<div class="box-body">';
 
@@ -1432,7 +1406,7 @@ function changeActionForDvlk() {
 					tbDvlkEdit += "<tr>";
 					tbDvlkEdit += "<th>ID</th>";
 					tbDvlkEdit += "<th>Tên ĐVLK</th>";
-					//tbDvlkEdit += "<th>Chỉnh sửa ĐVLK</th>";
+					tbDvlkEdit += "<th>Chỉnh sửa ĐVLK</th>";
 					tbDvlkEdit += "<th>Xóa ĐVLK</th>";
 					tbDvlkEdit += "</tr>";
 					tbDvlkEdit += "</thead>";
@@ -1462,13 +1436,13 @@ function changeActionForDvlk() {
 						tbDvlkEdit += "<td>" + value[0] + "</td>";
 						
 						tbDvlkEdit += "<td>" + value[1] + "</td>";
-						/*
+
 						tbDvlkEdit += '<td><a href="javascript:editDvlk(' + "'" + value[0] + "'" + ')">'+
 									'<button type="button" class="btn btn-block btn-success" data-toggle="modal" data-target="#modal-default">'+
 										'<i class="fa fa-cog"></i> Edit'+
 									'</button>'+
 									'</a></td>';	
-						*/
+
 						tbDvlkEdit += '<td><a href="javascript:deleteDvlk(' + "'" + value[0] + "'" + ')">'+
 									'<button type="button" class="btn btn-block btn-danger" data-toggle="modal" data-target="#modal-default">'+
 										'<i class="fa fa-trash"></i> Delete'+
@@ -1488,12 +1462,6 @@ function changeActionForDvlk() {
 				$("#showtbDvlk").html(tbDvlk);
 				
 				$("#tbDvlk").DataTable({
-					"scrollY": "200px",
-					"scrollCollapse": true,
-					"paging": false
-				});
-				
-				$("#tbDvlkEdit").DataTable({
 					"scrollY": "200px",
 					"scrollCollapse": true,
 					"paging": false
