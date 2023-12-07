@@ -106,15 +106,7 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
           }
           doc.styles.tableFooter = {
           }
-          var rowCount = doc.content[1].table.body.length;
-                for (i = 1; i < rowCount; i++) {
-                    doc.content[1].table.body[i][2].alignment = 'right'; // Căn lề phải cho cột thứ 3
-                }
-                doc.content[1].table.body.forEach(function(row) {
-                    row.forEach(function(cell) {
-                        cell.styles.border = [true, true, true, true]; // Đường viền
-                    });
-                });
+          
           // Thêm nội dụng vào đầu tài liệu
           doc.content.splice(0, 0, {
             columns: [

@@ -8,7 +8,7 @@
 			url: "./lib/ajax/getStatic/loadSelect.php",
 			dataType: "JSON",
 			success: function(result) {
-
+			
 				//Hiển thị thông tin lựa chọn ĐỊA PHƯƠNG
 
 				let optionDVLK = "";
