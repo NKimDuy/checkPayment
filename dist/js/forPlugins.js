@@ -107,6 +107,11 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
           doc.styles.tableFooter = {
           }
           
+          var rowCount = doc.content[0].table.body.length;
+          for (i = 1; i < rowCount; i++) {
+              doc.content[0].table.body[i][4].alignment = 'right';
+          }
+
           // Thêm nội dụng vào đầu tài liệu
           doc.content.splice(0, 0, {
             columns: [
@@ -254,14 +259,11 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
           var rowCount = doc.content[0].table.body.length;
           for (i = 1; i < rowCount; i++) {
               doc.content[0].table.body[i][3].alignment = 'right';
+              doc.content[0].table.body[i][5].alignment = 'right';
+              doc.content[0].table.body[i].fillColor = '#FFFFFF';
           }
 
-          doc.content[0].table.body.forEach(function(row) {
-            row.forEach(function(cell) {
-                //cell.border = [true, true, true, true]; // Đường viền
-                console.log(cell)
-            });
-        });
+         
         
           //doc.defaultStyle.alignment = 'right';
           //doc.styles.tableHeader.alignment = 'right';
@@ -371,6 +373,58 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
 
                   {
                     text: ['Kế toán trưởng'],
+                    alignment: 'center'
+                  }
+
+                ],
+                alignment: 'center'
+              },
+
+            ],
+            alignment: 'center',
+          });
+
+          doc.content.push({
+            text: ' '
+          });
+
+          doc.content.push({
+            text: ' '
+          });
+
+          doc.content.push({
+            text: ' '
+          });
+
+          doc.content.push({
+            columns: [
+              {
+                columns: [
+                  
+                  {
+                    text: ['Nguyễn Minh Hà'],
+                    alignment: 'center'
+                  },
+
+                  {
+                    text: ['Nguyễn Tấn Lượng'],
+                    alignment: 'center'
+                  }
+
+                ],
+                alignment: 'center'
+              },
+
+              {
+                columns: [
+                  
+                  {
+                    text: [''],
+                    alignment: 'center'
+                  },
+
+                  {
+                    text: [''],
                     alignment: 'center'
                   }
 

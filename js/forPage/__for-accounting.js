@@ -553,7 +553,7 @@ function OUconfirm(IdAccounting) {
 				let div =	"<div class='box-header'><h3 class='box-title'>DANH SÁCH PHẦN TRĂM QUYẾT TOÁN THEO LỚP</h3></div>" +
 				"<div class='box-body'>" 
 						
-				let table = "<table id='tbshowCreateListClass' class='table table-hover'>";
+				let table = "<table id='tbshowCreateListClass' class='table'>";
 
 				var stt = 1;
 
@@ -843,7 +843,7 @@ function OUconfirm(IdAccounting) {
 				header += "<th>Đợt</th>";
 				header += "<th>Tổng thu</th>";
 				header += "<th>Tổng Chi</th>";
-				header += "<th>% Khác</th>";
+				header += "<th>Chi Khác</th>";
 				header += "<th>Thực Chi</th>";
 				header += "<th>Ngày QT</th>";
 				header += "<th>Ghi chú</th>";
