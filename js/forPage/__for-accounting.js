@@ -46,7 +46,7 @@ function seeListSV(NhomTo, MaLop, dateRange, TenLop)
 				body += "<td>"  + value['MaSV'] + "</td>"; 
 				body += "<td>"  + value['HoLotSV'] + "</td>"; 
 				body += "<td>"  + value['TenSV'] + "</td>";  
-				body += "<td>"  + value['PhaiThu'] + "</td>"; 
+				body += "<td>"  + formatCurrency(value['PhaiThu']) + "</td>"; 
 				body += "<td>"  + value['NgayDong'] + "</td>"; 
 				body += "<td>"  + value['GhiChu'] + "</td>";
 				body += "<td>"  + '' + "</td>";   
@@ -207,13 +207,13 @@ function seePQT(IdAccounting) {
 			let header = "<thead>";
 				header += "<tr class='filters'>";
 				header += "<th>STT</th>";
-				header += "<th>Mã Lớp</th>";
-				header += "<th>Tên Lớp</th>";
+				header += "<th>MÃ LỚP</th>";
+				header += "<th>TÊN LỚP</th>";
 				//header += "<th>Mã nhóm</th>";
-				header += "<th>Tổng thu</th>";
-				header += "<th>Phần trăm</th>";
-				header += "<th>Tổng chi cho ĐVLK </th>";
-				header += "<th>Xem DSSV</th>";
+				header += "<th>TỔNG THU</th>";
+				header += "<th>PHẦN TRĂM</th>";
+				header += "<th>TỔNG CHI CHO ĐVLK</th>";
+				header += "<th>XEM DSSV</th>";
 				header += "</tr>";
 				header += "</thead>";
 

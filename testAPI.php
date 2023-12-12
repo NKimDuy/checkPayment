@@ -8,37 +8,15 @@
 
     include_once ("./db/connectSql.php");
 
-	$idAccounting = 'C42311282023r2';
+	$curl = connectCurl();
 
-	$PhanTramKhac = '2';
-
-	$GhiChu = 'Thêm 2%';
-	
 	$con = connectSql();
 
-	$sql = "select total_real, total, total_discount from accounting where ID_accounting = '" . $idAccounting . "'";
-
-	$query = mysqli_query($con, $sql);
-
-	if($query)
-	{
-		while($r = mysqli_fetch_assoc($query))
-		{
-			$ThucChi = ((int)$r['total']*((int)$PhanTramKhac/100)) + (int)$r['total_discount'];
-            //echo var_dump((int)$r['total']);
-		}
-	}
-
-
-	$sql_UP = "	UPDATE accounting 
+	$query = thongTinDongHocPhiDiaPhuong($curl, $madvpc = 'TX', $fromdate = '01/08/2023', $todate = '30/11/2023', $madp = 'CN');
 	
-				set note = '" .$noteAcc. "', total_real = '" . $ThucChi. "', percent_another = '" .$PhanTramKhac. "' 
-				
-				where ID_accounting = '" . $idAccounting . "'";
-	
-	$query_UP = mysqli_query($con, $sql_DEL);
+	$_SESSION['BillPaid_DVLK'] = json_decode(bzdecompress(base64_decode($query['data'])), true);
 
-    echo var_dump($ThucChi);
+    echo var_dump($_SESSION['BillPaid_DVLK']);
 
 ?>
 

@@ -95,81 +95,99 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
         text:'PDF',
         className: "btn btn-danger",
         extend: 'pdfHtml5',
+        orientation: 'landscape',
         download: 'open',
         footer: true,
-        exportOptions: {
-          columns: ':not(:last-child)'
-        },
         title: function() {return ""},
         customize: function (doc) {
+
           doc.styles.tableHeader = {
+            bold: true,
+            alignment: 'center',
           }
           doc.styles.tableFooter = {
+            bold: true
           }
           
           var rowCount = doc.content[0].table.body.length;
-          for (i = 1; i < rowCount; i++) {
+          for (i = 0; i < rowCount; i++) {
+
               doc.content[0].table.body[i][4].alignment = 'right';
+              doc.content[0].table.body[i][5].alignment = 'right';
+              doc.content[0].table.body[i][0].alignment = 'center';
+              doc.content[0].table.body[i][1].alignment = 'center';
+              doc.content[0].table.body[i].forEach(function (cell) { 
+                                                    cell.fontSize = 11; 
+                                                    cell.margin = [0, 0, 0, 10]; 
+                                                    cell.fillColor = 'white';
+                                                    cell.layout = {
+                                                      hLineWidth: function() { return 1; },
+                                                      vLineWidth: function() { return 1; },
+                                                      hLineColor: function() { return 'black'; },
+                                                      vLineColor: function() { return 'black'; },
+                                                    };
+                                                  }); 
+
           }
 
           // Thêm nội dụng vào đầu tài liệu
           doc.content.splice(0, 0, {
             columns: [
               {
-                text: ['BỘ GIÁO DỤC VÀ ĐÀO TẠO'],
+                text: ['BỘ GIÁO DỤC VÀ ĐÀO TẠO'], 
                 alignment: 'center'
               },
 
               {
                 text: ['CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM'],
+                bold: true,
+
                 alignment: 'center'
               },
 
             ],
-            alignment: 'center'
+            fontSize: 11,
+            alignment: 'center',
           });
 
           doc.content.splice(1, 0, {
             columns: [
               {
                 text: ['TRƯỜNG ĐẠI HỌC MỞ TP. HỒ CHÍ MINH'],
+                bold: true,
                 alignment: 'center'
               },
 
               {
                 text: ['Độc lập - Tự do - Hạnh phúc'],
+                bold: true,
                 alignment: 'center'
               },
 
             ],
+            fontSize: 11,
             margin: [0,0,0,15],
             alignment: 'center'
           });
 
           doc.content.splice(2, 0, {
-            text: 'DANH SÁCH ĐÓNG HỌC PHÍ',
-            alignment: 'center'
-          });
-
-          doc.content.splice(3, 0, {
-            text: "Lớp: " + TenLop,
-            alignment: 'center'
-          });
-
-          doc.content.splice(4, 0, {
-            text: "Tại "+ DP,
-            alignment: 'center'
-          });
-
-          doc.content.splice(5, 0, {
-            text: "(" + DR + ")",
+            text: [
+              'DANH SÁCH ĐÓNG HỌC PHÍ \n' +
+              'LỚP ' + TenLop.toUpperCase() + '\n' +
+              'TẠI ' + DP.toUpperCase() + '\n' +
+              '(Từ ' + DR.substring(0,10) + ' đến ' + DR.substring(13,23) + ')'
+            ],
             alignment: 'center',
-            margin: [0,0,0,20]
+            fontSize: 14,
+            margin: [0,0,0,15],
+            bold: true  
           });
 
           doc.content.push({
-            text: ' ',
-            alignment: 'left'
+            text: 'Số tiên bằng chữ:  ',
+            alignment: 'left',
+            fontSize: 11,
+            margin: [0,0,0,15],
           });
 
           doc.content.push({
@@ -191,7 +209,9 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
 
             ],
             alignment: 'center',
-            margin: [0,0,0,50]
+            bold: true,
+            fontSize: 11,
+            margin: [0,0,0,70]
           });
 
           doc.content.push({
@@ -212,7 +232,9 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
               },
 
             ],
-            alignment: 'center'
+            alignment: 'center',
+            bold: true,
+            fontSize: 11
           });
 
         }
@@ -249,78 +271,85 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
         title: function() {return ""},
         customize: function (doc) {
           doc.styles.tableHeader = {
+            bold: true
           }
           doc.styles.tableFooter = {
+            bold: true
           }
           
-
-
-
           var rowCount = doc.content[0].table.body.length;
-          for (i = 1; i < rowCount; i++) {
+          for (i = 0; i < rowCount; i++) {
+
               doc.content[0].table.body[i][3].alignment = 'right';
               doc.content[0].table.body[i][5].alignment = 'right';
-              doc.content[0].table.body[i].fillColor = '#FFFFFF';
-          }
+              doc.content[0].table.body[i][4].alignment = 'center';
+              doc.content[0].table.body[i].forEach(function (cell) { 
+                                                    cell.fontSize = 11; 
+                                                    cell.margin = [0, 0, 0, 10]; 
+                                                    cell.fillColor = 'white';
+                                                  }); 
 
-         
-        
-          //doc.defaultStyle.alignment = 'right';
-          //doc.styles.tableHeader.alignment = 'right';
+          }
 
           // Thêm nội dụng vào đầu tài liệu
           doc.content.splice(0, 0, {
             columns: [
               {
-                text: ['BỘ GIÁO DỤC VÀ ĐÀO TẠO'],
+                text: ['BỘ GIÁO DỤC VÀ ĐÀO TẠO'], 
                 alignment: 'center'
               },
 
               {
                 text: ['CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM'],
+                bold: true,
+
                 alignment: 'center'
               },
 
             ],
-            alignment: 'center'
+            fontSize: 11,
+            alignment: 'center',
           });
 
           doc.content.splice(1, 0, {
             columns: [
               {
                 text: ['TRƯỜNG ĐẠI HỌC MỞ TP. HỒ CHÍ MINH'],
+                bold: true,
                 alignment: 'center'
               },
 
               {
                 text: ['Độc lập - Tự do - Hạnh phúc'],
+                bold: true,
                 alignment: 'center'
               },
 
             ],
+            fontSize: 11,
             margin: [0,0,0,15],
             alignment: 'center'
           });
 
           doc.content.splice(2, 0, {
-            text: 'BẢNG QUYẾT TOÁN HỌC PHÍ',
-            alignment: 'center'
+            text: 'TP. Hồ Chí Minh, ngày      tháng      năm       ',
+            italics: true,
+            fontSize: 11,
+            margin: [0,0,0,15],
+            alignment: 'right'
           });
 
           doc.content.splice(3, 0, {
-            text: "Hệ "+ He,
+            text: [
+              'BẢNG QUYẾT TOÁN HỌC PHÍ \n' +
+              'HỆ ' + He.toUpperCase() + '\n' +
+              '(Từ ' + DR.substring(0,10) + ' đến ' + DR.substring(13,23) + ')' + '\n' +
+              'TẠI ' + DP.toUpperCase()
+            ],
             alignment: 'center',
-          });
-
-          doc.content.splice(4, 0, {
-            text: "(" + DR + ")",
-            alignment: 'center',
-          });
-
-          doc.content.splice(5, 0, {
-            text: "Tại "+ DP,
-            alignment: 'center',
-            margin: [0,0,0,20]
+            fontSize: 14,
+            margin: [0,0,0,15],
+            bold: true  
           });
 
           doc.content.push({
@@ -331,16 +360,19 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
           doc.content.push({
             columns: [
               {
-                text: ['ĐẠI DIỆN \n Trường Đại học Mở TP.HCM'],
+                text: ['ĐẠI DIỆN \n TRƯỜNG ĐẠI HỌC MỞ TP.HCM'],
                 alignment: 'center'
               },
 
               {
-                text: ['ĐẠI DIỆN \n' + DP],
+                text: ['ĐẠI DIỆN \n' + DP.toUpperCase()],
                 alignment: 'center'
               },
 
             ],
+            fontSize: 12,
+            bold: true,
+            argin: [15,0,0,0],
             alignment: 'center',
           });
 
@@ -367,12 +399,12 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
                 columns: [
                   
                   {
-                    text: ['Hiệu trưởng'],
+                    text: [''],
                     alignment: 'center'
                   },
 
                   {
-                    text: ['Kế toán trưởng'],
+                    text: [''],
                     alignment: 'center'
                   }
 
@@ -381,19 +413,10 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
               },
 
             ],
+            fontSize: 11,
+            bold: true,
+            margin: [0,0,0,70],
             alignment: 'center',
-          });
-
-          doc.content.push({
-            text: ' '
-          });
-
-          doc.content.push({
-            text: ' '
-          });
-
-          doc.content.push({
-            text: ' '
           });
 
           doc.content.push({
@@ -433,6 +456,8 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
               },
 
             ],
+            bold: true,
+            fontSize: 11,
             alignment: 'center',
           });
 
