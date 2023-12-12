@@ -117,7 +117,7 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
               doc.content[0].table.body[i][0].alignment = 'center';
               doc.content[0].table.body[i][1].alignment = 'center';
               doc.content[0].table.body[i].forEach(function (cell) { 
-                                                    cell.fontSize = 11; 
+                                                    cell.fontSize = 12; 
                                                     cell.margin = [0, 0, 0, 10]; 
                                                     cell.fillColor = 'white';
                                                     cell.layout = {
@@ -186,31 +186,55 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
           doc.content.push({
             text: 'Số tiên bằng chữ:  ',
             alignment: 'left',
-            fontSize: 11,
+            fontSize: 12,
             margin: [0,0,0,15],
           });
-
-          doc.content.push({
+		  
+		  doc.content.push({
             columns: [
               {
-                text: ['\n P. HIỆU TRƯỞNG'],
+                text: [''],
                 alignment: 'center'
               },
 
               {
-                text: ['\n TRƯỞNG PHÒNG TC-KT'],
+                text: [''],
                 alignment: 'center'
               },
 
               {
-                text: [' TP. HCM, ngày      tháng       năm     \n NGƯỜI LẬP BẢNG'],
+                text: ['TP. Hồ Chí Minh, ngày         tháng         năm      '],
+				italics: true,
+				fontSize: 12,
                 alignment: 'center'
               },
 
             ],
             alignment: 'center',
+          });
+		  
+
+          doc.content.push({
+            columns: [
+              {
+                text: ['P. HIỆU TRƯỞNG'],
+                alignment: 'center'
+              },
+
+              {
+                text: ['TRƯỞNG PHÒNG TC-KT'],
+                alignment: 'center'
+              },
+
+              {
+                text: ['NGƯỜI LẬP BẢNG'],
+                alignment: 'center',
+              },
+
+            ],
+            alignment: 'center',
             bold: true,
-            fontSize: 11,
+            fontSize: 12,
             margin: [0,0,0,70]
           });
 
@@ -234,7 +258,7 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
             ],
             alignment: 'center',
             bold: true,
-            fontSize: 11
+            fontSize: 12
           });
 
         }
@@ -284,7 +308,7 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
               doc.content[0].table.body[i][5].alignment = 'right';
               doc.content[0].table.body[i][4].alignment = 'center';
               doc.content[0].table.body[i].forEach(function (cell) { 
-                                                    cell.fontSize = 11; 
+                                                    cell.fontSize = 12; 
                                                     cell.margin = [0, 0, 0, 10]; 
                                                     cell.fillColor = 'white';
                                                   }); 
@@ -307,7 +331,7 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
               },
 
             ],
-            fontSize: 11,
+            fontSize: 12,
             alignment: 'center',
           });
 
@@ -326,7 +350,7 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
               },
 
             ],
-            fontSize: 11,
+            fontSize: 12,
             margin: [0,0,0,15],
             alignment: 'center'
           });
@@ -413,7 +437,7 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
               },
 
             ],
-            fontSize: 11,
+            fontSize: 12,
             bold: true,
             margin: [0,0,0,70],
             alignment: 'center',
@@ -457,7 +481,7 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
 
             ],
             bold: true,
-            fontSize: 11,
+            fontSize: 12,
             alignment: 'center',
           });
 
