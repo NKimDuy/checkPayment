@@ -18,7 +18,7 @@
 
 	//Tạo % trả thêm
 	$percent_another = 0;
-	$total_real = (($_SESSION['paid_DVLK']*$percent_another) + $_SESSION['accounting_DVLK']);
+	$total_real = 0;
 
 	$SQL_accounting = "insert into accounting (ID_accounting, ma_dvlk, dvlk, tier, create_day, year, round, ou_confirm, dvlk_confirm, total, total_discount, user_create, dateRange, status, percent_another, total_real) values('" .
 									$idAccounting . "', '" .  //ID_accounting
@@ -38,10 +38,9 @@
 									$percent_another . "', '" . 
 									$total_real ."')"; 						
 	
-	$insert_SQL_accounting = mysqli_query($con, $SQL_accounting);								
+	$insert_SQL_accounting = mysqli_query($con, $SQL_accounting);	
 
 	/* thêm SV student_accounting  */
-
 
 	if ($insert_SQL_accounting) {
 
@@ -58,7 +57,9 @@
 																				. trim($r['GhiChu']) . "', '" 
 																				. $idAccounting 
 																			. "')";
-			$insert_SQL_student_accounting = mysqli_query($con, $SQL_student_accounting);																		
+			
+			$insert_SQL_student_accounting = mysqli_query($con, $SQL_student_accounting);
+
 		}
 
 	}
@@ -67,7 +68,7 @@
 
 		$confirm =  "Đã cập nhật thành công";
 
-	  } else {
+	} else {
 
 		$sql_DEL = "delete from accounting where ID_accounting = '" . $idAccounting . "'";
 
@@ -75,7 +76,7 @@
 
 		$confirm =  "Cập nhật không thành công";
 
-	  }
+	}
 
 	echo json_encode(['test' => $SQL_student_accounting ,'confirm' => $confirm, 'rootUrl' => $conf['rootUrl']]);
 
