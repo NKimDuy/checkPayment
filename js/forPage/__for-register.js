@@ -499,8 +499,9 @@ function updateDVLK() {
 		url: "./lib/ajax/createOrAlterUser/updateDvlk.php",
 		dataType: "JSON",
 		success: function(result) {
-			alert(result['confirm']);
-			location.reload();
+			//alert(result['confirm']);
+			//location.reload();
+			console.log(result['confirm']);
 		}
 	});
 }

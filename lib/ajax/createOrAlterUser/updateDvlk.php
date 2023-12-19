@@ -36,7 +36,7 @@
 	{
 		$arrLinkUnitApi[$r['MaDP']] = $r["TenDP"];
 	}
-	
+	/*
 	$linkUnitHaveUpdate = array_diff($arrLinkUnitApi, $arrLinkUnitInDatabase);
 	
 	if(count($linkUnitHaveUpdate) != 0)
@@ -52,5 +52,7 @@
 			mysqli_query($con, $updateSuperAdmin);
 		}
 	}
-	echo json_encode(['confirm' => "Đã cập nhật " . count($linkUnitHaveUpdate) . " đơn vị liên kết mới"]);
+	*/
+	//echo json_encode(['confirm' => "Đã cập nhật " . count($linkUnitHaveUpdate) . " đơn vị liên kết mới"]);
+	echo json_encode(['confirm' => $arrLinkUnitApi]);
 ?>
