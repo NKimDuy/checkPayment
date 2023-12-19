@@ -108,6 +108,27 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
           doc.styles.tableFooter = {
             bold: true
           }
+
+          // Tùy chỉnh đường viền ở đây
+          var borderStyles = {
+                hLineWidth: function(i, node) {
+                    return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                },
+                vLineWidth: function(i, node) {
+                    return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+                },
+                hLineColor: function(i, node) {
+                    return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                },
+                vLineColor: function(i, node) {
+                    return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                }
+          };
+          doc.content[0].layout = borderStyles;
+
+          //doc.content[0].table.widths = Array(doc.content[0].table.body[0].length + 1).join('*').split('');
+
+          doc.content[0].table.widths = ['4%', '12%', '16%', '8%', '11%', '10%', '25%', '14%'];
           
           var rowCount = doc.content[0].table.body.length;
           for (i = 0; i < rowCount; i++) {
@@ -183,12 +204,12 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
             bold: true  
           });
 
-          doc.content.push({
-            text: 'Số tiên bằng chữ:  ',
-            alignment: 'left',
-            fontSize: 12,
-            margin: [0,0,0,15],
-          });
+      doc.content.push({
+        text: ['Số tiên bằng chữ:  '],
+        alignment: 'left',
+        fontSize: 12,
+        margin: [15,0,0,15],
+      });
 		  
 		  doc.content.push({
             columns: [
@@ -204,9 +225,8 @@ function formatTableExPDF_DSSV(id, len, TenLop, DR, DP) {
 
               {
                 text: ['TP. Hồ Chí Minh, ngày         tháng         năm      '],
-				italics: true,
-				fontSize: 12,
-                alignment: 'center'
+				        italics: true,
+				        fontSize: 12
               },
 
             ],
@@ -300,6 +320,23 @@ function formatTableExPDF_DSL(id, len, DR, DP, He) {
           doc.styles.tableFooter = {
             bold: true
           }
+
+                    // Tùy chỉnh đường viền ở đây
+                    var borderStyles = {
+                      hLineWidth: function(i, node) {
+                          return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                      },
+                      vLineWidth: function(i, node) {
+                          return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+                      },
+                      hLineColor: function(i, node) {
+                          return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                      },
+                      vLineColor: function(i, node) {
+                          return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                      }
+                };
+                doc.content[0].layout = borderStyles;
           
           var rowCount = doc.content[0].table.body.length;
           for (i = 0; i < rowCount; i++) {

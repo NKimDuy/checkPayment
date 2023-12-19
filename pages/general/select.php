@@ -19,7 +19,7 @@
                         <div class="col-xs-12 col-md-3">
                               <select id="selectSemester" class="form-control select2" aria-label="Default select example"></select>
                         </div>
-                        <?php } ?>
+                        <?php } ?> 
                   <!-- /.Semester  -->
 
                   <!-- Đơn vị liên kết  -->

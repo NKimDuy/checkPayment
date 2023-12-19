@@ -87,7 +87,7 @@
 
 			from link_unit_accounting
 				
-			where unit = '" . $_SESSION['MaDP'] . "'";
+			where unit = '" . substr($idAccounting,0,2) . "'";
 
 	$query_Percent = mysqli_query($con, $sql);
 

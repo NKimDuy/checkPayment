@@ -46,19 +46,30 @@
 
 		foreach($_SESSION['arrResult_DSSV'] as $r) {
 
-			$SQL_student_accounting = "insert into student_accounting values('" 
-																				. trim($r['MaSV']) . "', '" 
-																				. trim($r['HoLotSV']) . "', '" 
-																				. trim($r['TenSV']) . "', '" 
-																				. trim($r['NhomTo']) . "', '"	
-																				. trim($r['IDPThu']) . "', '"	
-																				. trim($r['PhaiThu']) . "', '" 
-																				. trim($r['NgayDong']) . "', '" 
-																				. trim($r['GhiChu']) . "', '" 
-																				. $idAccounting 
-																			. "')";
+			$SQL_student_accounting = 'insert into student_accounting values("' 
+																				. trim($r['MaSV']) . '", "' 
+																				. trim($r['HoLotSV']) . '", "'
+																				. trim($r['TenSV']) . '", "'
+																				. trim($r['NhomTo']) . '", "'	
+																				. trim($r['IDPThu']) . '", "'	
+																				. trim($r['PhaiThu']) . '", "' 
+																				. trim($r['NgayDong']) . '", "'
+																				. trim($r['GhiChu']) . '", "'
+																				. $idAccounting
+																			. '")';
 			
 			$insert_SQL_student_accounting = mysqli_query($con, $SQL_student_accounting);
+
+			// if ($insert_SQL_student_accounting) {
+
+			// 	echo 'thành công '.$r['MaSV'].' '.$r['PhaiThu'].'<br>';
+
+			// } else {
+
+			// 	echo 'thất bại '.$r['MaSV'].' '.$r['PhaiThu'].'<br>';
+			// 	echo("Error description: " . $con -> error); 
+
+			// }
 
 		}
 
