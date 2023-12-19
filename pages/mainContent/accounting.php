@@ -20,14 +20,24 @@
                         <div class="nav-tabs-custom">
 
                             <ul class="nav nav-tabs">
-                                <?php //if($_SESSION['groupUser'] != "2") { ?>
+                                <?php if($_SESSION['groupUser'] == "1") { ?>
                                 <li class=""><a href="#byCreate" data-toggle="tab" aria-expanded="false"><h4>TẠO PHIẾU QUYẾT TOÁN</h4></a></li>
                                 <li class=""><a href="#byPercent" data-toggle="tab" aria-expanded="true"><h4>XEM TỶ LỆ PHẦN TRĂM QT</h4></a></li>
                                 <li class=""><a href="#byListOU" data-toggle="tab" aria-expanded="true"><h4>DANH SÁCH PHIẾU QUYẾT TOÁN</h4></a></li>
                                 <li class=""><a href="#byStatis" data-toggle="tab" aria-expanded="true"><h4>THỐNG KÊ QUYẾT TOÁN</h4></a></li> <!-- OU -->
-								<?php //}else { ?>
                                 <li class=""><a href="#byListDVLK" data-toggle="tab" aria-expanded="false"><h4>DANH SÁCH PHIẾU QUYẾT TOÁN</h4></a></li><!-- DP -->
-								<?php //} ?>
+								<?php } ?>
+								
+								<?php if($_SESSION['groupUser'] == "2") { ?>
+								<li class=""><a href="#byListDVLK" data-toggle="tab" aria-expanded="false"><h4>DANH SÁCH PHIẾU QUYẾT TOÁN</h4></a></li><!-- DP -->
+								<?php } ?>
+								
+								<?php if($_SESSION['groupUser'] == "5") { ?>
+								<li class=""><a href="#byCreate" data-toggle="tab" aria-expanded="false"><h4>TẠO PHIẾU QUYẾT TOÁN</h4></a></li>
+                                <li class=""><a href="#byPercent" data-toggle="tab" aria-expanded="true"><h4>XEM TỶ LỆ PHẦN TRĂM QT</h4></a></li>
+                                <li class=""><a href="#byListOU" data-toggle="tab" aria-expanded="true"><h4>DANH SÁCH PHIẾU QUYẾT TOÁN</h4></a></li>
+                                <li class=""><a href="#byStatis" data-toggle="tab" aria-expanded="true"><h4>THỐNG KÊ QUYẾT TOÁN</h4></a></li> <!-- OU -->
+								<?php } ?>
                             </ul>
                             
                             <div class="tab-content">
